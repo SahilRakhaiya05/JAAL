@@ -1,0 +1,40 @@
+/* JAAL design tokens. Source of truth for web, extension and (by value) Android. */
+:root {
+  --ink-900: #0A0C0F;
+  --ink-700: #16191D;
+  --ink-500: #2A2F35;
+  --paper: #FBFAF7;
+  --text-hi: #F4F3F0;
+  --text-lo: #9BA1A8;
+  --brand: #6E5BFF;
+  --state-caution: #F2A93B;
+  --state-confirmed: #E5484D;
+  --state-confirmed-tint: rgba(229, 72, 77, 0.12);
+  --state-caution-tint: rgba(242, 169, 59, 0.10);
+
+  --font-latin: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-indic: "Noto Sans Devanagari", "Noto Sans Gujarati", var(--font-latin);
+  --font: "Inter", "Noto Sans Devanagari", "Noto Sans Gujarati", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --t-display: 600 28px/32px var(--font);
+  --t-verdict: 600 22px/26px var(--font);
+  --t-body: 400 15px/22px var(--font);
+  --t-caption: 400 13px/18px var(--font);
+  --t-micro: 400 11px/14px var(--font);
+  --lh-indic: 1.6;
+
+  --radius-card: 20px;
+  --pad-card: 20px;
+  --hairline: 1px solid var(--ink-500);
+  --tap: 48px;
+
+  --ease-enter: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-enter: 220ms;
+  --dur-exit: 140ms;
+}
+
+:lang(hi), :lang(gu) { line-height: var(--lh-indic); }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-enter: 0ms; --dur-exit: 0ms; }
+}
