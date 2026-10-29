@@ -1,0 +1,6 @@
+{
+  "name": "@jaal/shared",
+  "private": true,
+  "type": "commonjs",
+  "main": "extract.js"
+}
