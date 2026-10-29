@@ -1,0 +1,24 @@
+{
+  "name": "@jaal/server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JAAL API: shared fraud-ring graph, verdicts, seeds and payment/notification integrations.",
+  "type": "module",
+  "main": "src/index.js",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "seed": "node src/seed/cli.js all",
+    "seed:feeds": "node src/seed/cli.js feeds",
+    "seed:demo": "node src/seed/cli.js demo",
+    "seed:clear-demo": "node src/seed/cli.js clear-demo",
+    "test": "node --test --test-concurrency=1 test/*.test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "multer": "^2.0.2",
+    "qrcode": "^1.5.4"
+  }
+}
