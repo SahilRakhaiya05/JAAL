@@ -1,0 +1,30 @@
+{
+  "openphish": {
+    "status": "ok",
+    "url": "https://openphish.com/feed.txt",
+    "fetchedAt": "2026-10-30T08:49:23.053Z",
+    "identifiers": 377
+  },
+  "urlhaus": {
+    "status": "skipped",
+    "note": "set URLHAUS_AUTH_KEY (free abuse.ch key); public dumps return HTTP 410"
+  },
+  "metamask": {
+    "status": "ok",
+    "url": "https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/main/src/config.json",
+    "fetchedAt": "2026-10-30T08:49:23.572Z",
+    "identifiers": 9902
+  },
+  "scamsniffer_domains": {
+    "status": "ok",
+    "url": "https://raw.githubusercontent.com/scamsniffer/scam-database/main/blacklist/domains.json",
+    "fetchedAt": "2026-10-30T08:49:24.522Z",
+    "identifiers": 10000
+  },
+  "scamsniffer_addresses": {
+    "status": "ok",
+    "url": "https://raw.githubusercontent.com/scamsniffer/scam-database/main/blacklist/address.json",
+    "fetchedAt": "2026-10-30T08:49:24.612Z",
+    "identifiers": 2530
+  }
+}
