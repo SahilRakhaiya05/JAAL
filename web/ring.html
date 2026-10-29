@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en-IN" data-theme-auto>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A scam ring, mapped — JAAL</title>
+<meta name="description" content="Every number, UPI ID, account and link in one scam ring, as the JAAL graph sees it.">
+<meta name="theme-color" content="#0A0C0F">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="A scam ring, mapped — JAAL">
+<meta property="og:description" content="Every number, UPI ID, account and link in one scam ring, as the JAAL graph sees it.">
+<meta property="og:image" content="/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Gujarati:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="stylesheet" href="/assets/pages.css">
+<script src="/shared/extract.js" defer></script>
+<script src="/shared/ring.js" defer></script>
+<script type="module" src="/assets/pages.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="JAAL home"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a>
+    <span class="spacer"></span>
+    <a class="btn sm" href="/check.html">Check something</a>
+  </div>
+</header>
+
+<main class="wrap page" id="main" data-page="ring">
+  <p class="crumbs"><a href="/#rings">Ring of the day</a><span aria-hidden="true">/</span><span id="rCrumb">Ring</span></p>
+  <h1 class="page-title" id="rName">Loading the ring…</h1>
+  <p class="page-sub" id="rPattern"></p>
+  <div class="statrow" id="rStats"></div>
+  <div class="ring-hero dark">
+    <div class="stage" id="rStage" role="img" aria-label="Ring diagram"></div>
+    <div class="bar">
+      <div class="legend"><span><i style="background:var(--brand)"></i>Centre</span><span><i style="background:var(--state-confirmed)"></i>Confirmed</span><span><i style="background:var(--text-lo);opacity:.4"></i>Linked</span></div>
+      <span class="spacer"></span>
+      <button class="btn sm" type="button" id="rReplay">Replay</button>
+      <button class="btn sm" type="button" id="rShare"><span data-icon="share"></span>Share</button>
+      <button class="btn sm primary" type="button" id="rDownload"><span data-icon="download"></span>Download image</button>
+    </div>
+  </div>
+  <h2 class="sub">Where it spread</h2>
+  <p class="caption lo" style="margin-top:6px">Cities in the order reports first arrived from them.</p>
+  <ol class="spread" id="rSpread"></ol>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div><a class="brand" href="/"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a><p style="margin-top:8px;max-width:36ch">जाल means net. Built in India, for the people scam rings call first.</p></div>
+    <div><h4>Product</h4><ul><li><a href="/check.html">Check something</a></li><li><a href="/guardian.html">Family Shield</a></li><li><a href="/extension.html">Install</a></li></ul></div>
+    <div><h4>Trust</h4><ul><li><a href="/privacy.html">Privacy</a></li><li><a href="/privacy.html#dispute">Dispute a report</a></li><li><a href="tel:1930">Call 1930</a></li></ul></div>
+    <div><h4>Graph</h4><ul><li><a href="/#rings">Ring of the day</a></li><li><a href="/api/stats">Public stats API</a></li></ul></div>
+  </div>
+</footer>
+</body>
+</html>

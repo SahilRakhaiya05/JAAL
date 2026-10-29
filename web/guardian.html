@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en-IN" data-theme-auto>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Family Shield — JAAL</title>
+<meta name="description" content="Pair your parent’s phone with yours using a 6-digit code. When they see a confirmed scam ring, you see it too.">
+<meta name="theme-color" content="#0A0C0F">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="Family Shield — JAAL">
+<meta property="og:description" content="Pair your parent’s phone with yours using a 6-digit code. When they see a confirmed scam ring, you see it too.">
+<meta property="og:image" content="/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Gujarati:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="stylesheet" href="/assets/pages.css">
+<script src="/shared/extract.js" defer></script>
+<script src="/shared/ring.js" defer></script>
+<script type="module" src="/assets/pages.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="JAAL home"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a>
+    <span class="spacer"></span>
+    <a class="btn sm" href="/check.html">Check something</a>
+  </div>
+</header>
+
+<main class="wrap page narrow" id="main" data-page="guardian">
+  <h1 class="page-title">Family Shield</h1>
+  <p class="page-sub">Pair a parent’s phone with yours using a 6-digit code. When JAAL shows them a confirmed ring, you get the same card. No account, no contacts.</p>
+  <div class="seg2" role="tablist" aria-label="Which phone is this?">
+    <button role="tab" type="button" id="tabParent" aria-selected="true" aria-controls="paneParent">This is the phone to protect</button>
+    <button role="tab" type="button" id="tabGuardian" aria-selected="false" aria-controls="paneGuardian">I am the guardian</button>
+  </div>
+  <section class="pane" id="paneParent" role="tabpanel" aria-labelledby="tabParent">
+    <p class="lo">Show a code here, then type it on your own phone under “I am the guardian”.</p>
+    <div class="code" id="code" aria-live="polite"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></div>
+    <button class="btn primary" type="button" id="pairBtn">Show pairing code</button>
+  </section>
+  <section class="pane" id="paneGuardian" role="tabpanel" aria-labelledby="tabGuardian" hidden>
+    <form id="linkForm" class="pane" style="margin-top:0">
+      <div class="field"><label for="codeIn">6-digit code from the other phone</label>
+      <input class="input codeinput" id="codeIn" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required></div>
+      <button class="btn primary" type="submit">Link phones</button>
+    </form>
+    <p class="status-line" id="linkStatus" role="status"></p>
+    <div id="alertsWrap" hidden>
+      <h2 class="sub" style="margin-top:24px">Alerts</h2>
+      <p class="status-line" style="margin:6px 0 16px"><span class="live"><i></i></span><span>Checking every 15 s</span></p>
+      <div class="alerts" id="alerts" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div><a class="brand" href="/"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a><p style="margin-top:8px;max-width:36ch">जाल means net. Built in India, for the people scam rings call first.</p></div>
+    <div><h4>Product</h4><ul><li><a href="/check.html">Check something</a></li><li><a href="/guardian.html">Family Shield</a></li><li><a href="/extension.html">Install</a></li></ul></div>
+    <div><h4>Trust</h4><ul><li><a href="/privacy.html">Privacy</a></li><li><a href="/privacy.html#dispute">Dispute a report</a></li><li><a href="tel:1930">Call 1930</a></li></ul></div>
+    <div><h4>Graph</h4><ul><li><a href="/#rings">Ring of the day</a></li><li><a href="/api/stats">Public stats API</a></li></ul></div>
+  </div>
+</footer>
+</body>
+</html>
