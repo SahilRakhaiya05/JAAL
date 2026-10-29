@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-IN" data-theme-auto>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Check before you pay — JAAL</title>
+<meta name="description" content="Paste a message, number, UPI ID, link or wallet. JAAL tells you in about 150 ms if it belongs to a scam ring others have reported.">
+<meta name="theme-color" content="#0A0C0F">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="Check before you pay — JAAL">
+<meta property="og:description" content="Paste a number, UPI ID or link. See if others reported it, in about 150 ms.">
+<meta property="og:image" content="/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Gujarati:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="stylesheet" href="/assets/check.css">
+<script src="/shared/extract.js" defer></script>
+<script src="/shared/ring.js" defer></script>
+<script type="module" src="/assets/check.js"></script>
+</head>
+<body>
+<a class="skip" href="#q">Skip to the check box</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="JAAL home"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a>
+    <span class="spacer"></span>
+    <div class="lang"></div>
+  </div>
+</header>
+
+<main class="wrap narrow" id="main">
+  <h1 class="page-title" data-i18n="check.title">Check before you pay</h1>
+  <p class="page-sub lo" data-i18n="check.sub">Paste the message, or just the number, UPI ID, link or wallet. Only the identifiers are checked.</p>
+
+  <form class="composer-box" id="form" autocomplete="off">
+    <label class="sr" for="q" data-i18n="check.ph">Paste a message, number, UPI ID, link or wallet</label>
+    <textarea id="q" name="q" rows="5" spellcheck="false" data-i18n-ph="check.ph" placeholder="Paste a message, number, UPI ID, link or wallet"></textarea>
+    <div class="found" id="found" aria-live="polite">
+      <span class="caption lo" id="foundLabel" data-i18n="check.none">No numbers, UPI IDs or links found yet.</span>
+      <div class="idchips" id="chips"></div>
+    </div>
+    <div class="toolbar">
+      <button class="btn mic" type="button" id="mic" aria-pressed="false"><span data-icon="mic"></span><span id="micLabel" data-i18n="check.voice">Speak</span></button>
+      <label class="sr" for="voiceLang">Voice language</label>
+      <select class="vlang" id="voiceLang" aria-label="Voice language">
+        <option value="en-IN">English</option>
+        <option value="hi-IN">हिन्दी</option>
+        <option value="gu-IN">ગુજરાતી</option>
+      </select>
+      <span class="spacer"></span>
+      <button class="btn primary go" type="submit" id="go"><span data-i18n="check.go">Check</span></button>
+    </div>
+  </form>
+
+  <div class="examples">
+    <span class="caption lo" data-i18n="check.try">Try one</span>
+    <button type="button" class="ex" data-example="kyc" data-i18n="check.ex1">KYC refund SMS</button>
+    <button type="button" class="ex" data-example="intl" data-i18n="check.ex2">Unknown +92 number</button>
+    <button type="button" class="ex" data-example="friend" data-i18n="check.ex3">A friend’s UPI</button>
+  </div>
+  <p class="caption lo privacy-note"><span class="lock" aria-hidden="true"></span><span><span data-i18n="check.privacy">Only hashed identifiers leave this page. Your message text stays here.</span> <a href="/privacy.html">How</a></span></p>
+
+  <section id="result" class="result" aria-live="polite" aria-busy="false"></section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div><a class="brand" href="/"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a></div>
+    <div><h4>Product</h4><ul><li><a href="/">Home</a></li><li><a href="/guardian.html">Family Shield</a></li><li><a href="/extension.html">Install</a></li></ul></div>
+    <div><h4>Trust</h4><ul><li><a href="/privacy.html">Privacy</a></li><li><a href="/privacy.html#dispute">Dispute a report</a></li></ul></div>
+    <div><h4>Help now</h4><ul><li><a href="tel:1930">Call 1930</a></li><li><a href="https://sancharsaathi.gov.in/sfc/" target="_blank" rel="noopener">Chakshu</a></li></ul></div>
+  </div>
+</footer>
+</body>
+</html>

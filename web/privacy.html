@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en-IN" data-theme-auto>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy — JAAL</title>
+<meta name="description" content="What JAAL takes (hashed scammer-side identifiers) and what it never takes (contacts, your identity, your messages).">
+<meta name="theme-color" content="#0A0C0F">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="Privacy — JAAL">
+<meta property="og:description" content="What JAAL takes (hashed scammer-side identifiers) and what it never takes (contacts, your identity, your messages).">
+<meta property="og:image" content="/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Gujarati:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="stylesheet" href="/assets/pages.css">
+<script src="/shared/extract.js" defer></script>
+<script src="/shared/ring.js" defer></script>
+<script type="module" src="/assets/pages.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="JAAL home"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a>
+    <span class="spacer"></span>
+    <a class="btn sm" href="/check.html">Check something</a>
+  </div>
+</header>
+
+<main class="wrap page narrow doc" id="main" data-page="privacy">
+  <h1 class="page-title">We keep what the scammer sent. Never you.</h1>
+  <p class="page-sub">Plain language, no legal hedging. If something here is ever untrue, that is a bug and we will fix it.</p>
+  <div class="tworow">
+    <div class="yes"><h3>What JAAL takes</h3><ul>
+      <li>Scammer-side identifiers: the number, UPI ID, bank account, link, app file or wallet in a suspicious message</li>
+      <li>Only as SHA-256 hashes for lookups; the first 8 characters are checked first</li>
+      <li>A report, tied to a salted hash of a random device id</li>
+    </ul></div>
+    <div class="no"><h3>What JAAL never takes</h3><ul>
+      <li>Your contacts or address book</li>
+      <li>Your name, phone number, email or any account</li>
+      <li>Your messages, beyond the scammer identifiers in them</li>
+      <li>Your screen: no Android AccessibilityService</li>
+    </ul></div>
+  </div>
+
+  <h2>How a check works</h2>
+  <p>Your device keeps a list of 8-character hash prefixes for identifiers that have been reported. When something arrives, JAAL extracts identifiers on the device, hashes them, and compares prefixes locally, the same pattern Google Safe Browsing uses. Only when a prefix matches does your device ask for that one bucket of full hashes. The server never learns the identifiers that did not match.</p>
+  <p>Most text never leaves your device at all: <strong>on-device triage</strong> runs in under 1 ms and discards everything without a signal.</p>
+
+  <h2>Your normal stays on your phone</h2>
+  <p>JAAL learns what is normal for you, like the payees you pay every month, as an <strong>on-device baseline</strong>. It is never uploaded and is deleted when you uninstall.</p>
+
+  <h2>Reports and reporters</h2>
+  <p>A report is linked to a <strong>salted hash</strong> of a random id made on your device, never to a person. Message text is only stored after removing your own names, amounts and account numbers. A verdict says "confirmed" only after at least 3 reports from 2 independent groups of reporters, or a match with a public feed.</p>
+
+  <h2>Chakshu and 1930</h2>
+  <p>JAAL drafts a Chakshu report for you to read and send yourself. It is <strong>never auto-submitted</strong>. Calling 1930 is always your tap.</p>
+
+  <h2 id="dispute">Dispute a report</h2>
+  <p>If your number, UPI ID or site is shown as reported and it is yours, tell us. Its reports are held for review straight away and nothing is shown as confirmed while we look.</p>
+  <form class="formcard" id="disputeForm">
+    <div class="field"><label for="dId">Your number, UPI ID, link or account</label><input class="input" id="dId" required autocomplete="off" placeholder="e.g. shop.name@okaxis"></div>
+    <div class="field"><label for="dWhy">Why is it wrong?</label><textarea class="input" id="dWhy" rows="3" required maxlength="500"></textarea></div>
+    <div class="field"><label for="dContact">Contact (optional)</label><input class="input" id="dContact" autocomplete="off" maxlength="120"></div>
+    <button class="btn primary" type="submit">Send dispute</button>
+    <p class="caption lo" id="dStatus" role="status"></p>
+  </form>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div><a class="brand" href="/"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a><p style="margin-top:8px;max-width:36ch">जाल means net. Built in India, for the people scam rings call first.</p></div>
+    <div><h4>Product</h4><ul><li><a href="/check.html">Check something</a></li><li><a href="/guardian.html">Family Shield</a></li><li><a href="/extension.html">Install</a></li></ul></div>
+    <div><h4>Trust</h4><ul><li><a href="/privacy.html">Privacy</a></li><li><a href="/privacy.html#dispute">Dispute a report</a></li><li><a href="tel:1930">Call 1930</a></li></ul></div>
+    <div><h4>Graph</h4><ul><li><a href="/#rings">Ring of the day</a></li><li><a href="/api/stats">Public stats API</a></li></ul></div>
+  </div>
+</footer>
+</body>
+</html>

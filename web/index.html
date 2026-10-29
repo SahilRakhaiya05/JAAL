@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en-IN" data-theme-auto>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JAAL — scam rings, caught before you pay</title>
+<meta name="description" content="JAAL watches the numbers, UPI IDs and links that reach you and shows when they belong to a scam ring others have reported. Free, no account, nothing uploaded.">
+<meta name="theme-color" content="#0A0C0F">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:title" content="JAAL watches for scam rings, so you don't have to">
+<meta property="og:description" content="Numbers rotate in days. Payout accounts stay for months. JAAL maps the ring and tells you before you pay.">
+<meta property="og:image" content="/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Gujarati:wght@400;600&display=swap">
+<link rel="stylesheet" href="/assets/app.css">
+<link rel="stylesheet" href="/assets/landing.css">
+<script src="/shared/ring.js" defer></script>
+<script type="module" src="/assets/landing.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="JAAL home"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#how" data-i18n="nav.how">How it works</a>
+      <a href="#graph" data-i18n="nav.graph">Why a graph</a>
+      <a href="#privacy" data-i18n="nav.privacy">Privacy</a>
+      <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
+    </nav>
+    <span class="spacer"></span>
+    <div class="lang"></div>
+    <a class="btn sm hide-sm" href="/check.html" data-i18n="nav.check">Check something</a>
+  </div>
+</header>
+
+<main id="main">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="live"><i></i></span><span data-i18n="hero.eyebrow">Ambient scam shield for India</span></p>
+        <h1 class="hero-title" data-i18n="hero.title">JAAL watches for scam rings, so you don’t have to.</h1>
+        <p class="hero-sub" data-i18n="hero.sub">It sits quietly in Chrome and on Android. When a number, UPI ID or link belongs to a ring others have reported, you see it before you pay. Nothing you read is uploaded.</p>
+        <div class="cta-row">
+          <a class="btn primary lg" href="/extension.zip" download><span data-icon="chrome"></span><span data-i18n="hero.cta">Add to Chrome</span></a>
+          <a class="btn lg" href="/check.html"><span data-i18n="hero.cta2">Check something now</span><span data-icon="arrow"></span></a>
+        </div>
+        <p class="hero-note caption lo"><span data-i18n="hero.note">Free. No account. No contacts. Works in English, हिन्दी, ગુજરાતી.</span> <a href="/extension.html" data-i18n="hero.unpacked">Install steps</a></p>
+      </div>
+
+      <div class="stage" aria-label="Example: JAAL showing a confirmed ring over a chat">
+        <div class="stage-ring" id="heroRing" aria-hidden="true"></div>
+        <div class="phone dark" aria-hidden="true">
+          <div class="phone-notch"></div>
+          <div class="chat-head">
+            <span class="avatar">?</span>
+            <span><b>+91 78650 43321</b><small>not in your contacts</small></span>
+          </div>
+          <div class="chat">
+            <p class="day">Today</p>
+            <div class="bubble in">Dear customer, your SBI KYC has expired and your account will be blocked today. Pay ₹10 verification to <u>refund.desk@ybl</u> to keep it active.<time>10:42</time></div>
+            <div class="bubble in">Do it in 30 minutes or call 7865043321<time>10:42</time></div>
+          </div>
+          <div class="composer"><span>Message</span></div>
+        </div>
+        <div class="overlay-slot" id="heroCard"></div>
+      </div>
+    </div>
+
+    <div class="wrap counters-wrap">
+      <div class="counters-head">
+        <span class="live"><i></i><span>Live from the graph</span></span>
+        <span class="caption lo num" id="updated"></span>
+      </div>
+      <div class="counters" id="counters" aria-live="off"></div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section class="s" id="how">
+    <div class="wrap">
+      <p class="eyebrow"><span class="idx">01</span> How it works</p>
+      <h2 class="h">Four steps, and the first two never leave your phone.</h2>
+      <p class="lede">JAAL reads what already arrives: a WhatsApp Web message, a Gmail link, a downloaded file, the UPI ID you just copied. Most of it is discarded on the device in under 1 ms.</p>
+      <ol class="steps">
+        <li>
+          <span class="step-n num">01</span>
+          <svg class="step-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="26" rx="4"/><path d="M14 20h20M14 26h12"/></svg>
+          <h3>Sensors</h3>
+          <p>Chrome extension, Android app, this page and a Telegram bot see messages, links, downloads and pastes.</p>
+        </li>
+        <li>
+          <span class="step-n num">02</span>
+          <svg class="step-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 12h32L28 26v10l-8 4V26z"/></svg>
+          <h3>On-device triage</h3>
+          <p>16 signals score the text locally. Identifiers are hashed; only an 8-character prefix is compared first.</p>
+        </li>
+        <li>
+          <span class="step-n num">03</span>
+          <svg class="step-ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="4"/><circle cx="10" cy="14" r="3"/><circle cx="38" cy="12" r="3"/><circle cx="36" cy="37" r="3"/><circle cx="11" cy="36" r="3"/><path d="M24 24 10 14M24 24l14-12M24 24l12 13M24 24 11 36"/></svg>
+          <h3>The graph</h3>
+          <p>A matched prefix asks the shared graph: is this 1 or 2 hops from a confirmed ring? Answers in about 150 ms.</p>
+        </li>
+        <li>
+          <span class="step-n num">04</span>
+          <svg class="step-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="6" width="24" height="36" rx="5"/><rect x="15" y="12" width="18" height="10" rx="2"/></svg>
+          <h3>The overlay</h3>
+          <p>A single card, only when there is something to say. No card means no reports. Every check makes the graph denser.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- MOMENT OF PAYMENT -->
+  <section class="s" id="payment">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow"><span class="idx">02</span> The moment of payment</p>
+        <h2 class="h">The last second before money moves is the one that counts.</h2>
+        <p class="lede">Most scams end in a copy and a paste: a UPI ID from a chat, dropped into a payment app. JAAL watches that clipboard moment on your device and answers before the PIN screen.</p>
+        <ul class="ticks">
+          <li><b class="num">0 ms</b><span>You copy <code>refund.desk@ybl</code>. JAAL hashes it locally.</span></li>
+          <li><b class="num">1 ms</b><span>The hash prefix matches one of the reported buckets on your device.</span></li>
+          <li><b class="num">142 ms</b><span>The graph answers: 61 reports, linked to <span id="tickN">15</span> numbers in one ring.</span></li>
+        </ul>
+      </div>
+      <div class="pay-stage">
+        <div class="paysheet dark" aria-hidden="true">
+          <p class="caption lo">Paying</p>
+          <p class="pay-to">refund.desk@ybl</p>
+          <p class="pay-amt num">₹4,999</p>
+          <div class="pay-keys"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="pay-btn">Proceed to pay</div>
+        </div>
+        <div class="overlay-slot pay-card" id="payCard"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY GRAPH -->
+  <section class="s" id="graph">
+    <div class="wrap">
+      <p class="eyebrow"><span class="idx">03</span> Why a graph</p>
+      <h2 class="h">Scammers change numbers in days. They keep payout accounts for months.</h2>
+      <p class="lede">A blocklist of numbers is always a week late. The account a ring gets paid into is the slow-moving part, and it links every number, link and app the ring uses. Only a graph sees that.</p>
+      <div class="facts">
+        <div><b class="num">3–7 days</b><span class="caption lo">typical life of a scam phone number</span></div>
+        <div><b class="num">90+ days</b><span class="caption lo">the same payout account stays in use</span></div>
+        <div><b class="num">2 hops</b><span class="caption lo">from a new number to a known ring</span></div>
+      </div>
+      <h3 class="q-title">Six questions only a graph answers</h3>
+      <ol class="questions">
+        <li><span class="qk">blast_radius</span><b>Who else has this account been paid by?</b><span class="caption lo">Every number and link 2 hops out, in one query.</span></li>
+        <li><span class="qk">ring_detection</span><b>Which of these numbers are one ring?</b><span class="caption lo">Connected components on hard links, then communities on weighted ones.</span></li>
+        <li><span class="qk">money_chokepoint</span><b>Which account collects from the most numbers?</b><span class="caption lo">The single report a bank can act on.</span></li>
+        <li><span class="qk">lookalike_domain</span><b>Is <code>sbi-kyc-update.in</code> a copy of a real bank?</b><span class="caption lo">3-shingle overlap against known domains.</span></li>
+        <li><span class="qk">script_similarity</span><b>Is this the same script with a new number?</b><span class="caption lo">Message vectors, so a reworded SMS still links.</span></li>
+        <li><span class="qk">spread_map</span><b>Which city does it reach next?</b><span class="caption lo">First-seen order across reports, by day.</span></li>
+      </ol>
+      <p class="caption lo tg">Runs on TigerGraph in production: 12 vertex types, 9 edge types, 6 GSQL queries. A local in-memory engine mirrors the schema 1:1.</p>
+    </div>
+  </section>
+
+  <!-- RING OF THE DAY -->
+  <section class="s" id="rings">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow"><span class="idx">04</span> Ring of the day</p>
+          <h2 class="h">What the graph is holding right now.</h2>
+        </div>
+      </div>
+      <ol class="ringlist" id="ringList" aria-live="off"></ol>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="s" id="compare">
+    <div class="wrap">
+      <p class="eyebrow"><span class="idx">05</span> Compared</p>
+      <h2 class="h">Everything else waits for you to act. JAAL already did.</h2>
+      <div class="cmp" role="table" aria-label="JAAL compared with other tools">
+        <div class="cmp-row cmp-headrow" role="row">
+          <span role="columnheader"></span>
+          <span role="columnheader">Identifiers covered</span>
+          <span role="columnheader">Needs you to act?</span>
+          <span role="columnheader">Sees the ring?</span>
+          <span role="columnheader">What it takes from you</span>
+        </div>
+        <div class="cmp-row us" role="row">
+          <span role="rowheader"><span data-icon="mark" class="cmp-mark"></span>JAAL</span>
+          <span role="cell" data-k="Covers">Numbers, UPI IDs, bank accounts, links, APKs, crypto wallets</span>
+          <span role="cell" data-k="Needs you to act">No. It watches what arrives</span>
+          <span role="cell" data-k="Sees the ring">Yes, 2 hops out</span>
+          <span role="cell" data-k="Takes"><span><b>Nothing.</b> Hashed scammer-side identifiers only</span></span>
+        </div>
+        <div class="cmp-row" role="row">
+          <span role="rowheader">Truecaller</span>
+          <span role="cell" data-k="Covers">Phone numbers</span>
+          <span role="cell" data-k="Needs you to act">No, for calls</span>
+          <span role="cell" data-k="Sees the ring">No</span>
+          <span role="cell" data-k="Takes">Your number, and contacts access for caller ID</span>
+        </div>
+        <div class="cmp-row" role="row">
+          <span role="rowheader">Chakshu (Sanchar Saathi)</span>
+          <span role="cell" data-k="Covers">Numbers, SMS, links, WhatsApp accounts</span>
+          <span role="cell" data-k="Needs you to act">Yes, you file each report</span>
+          <span role="cell" data-k="Sees the ring">No</span>
+          <span role="cell" data-k="Takes">Your mobile number and an OTP</span>
+        </div>
+        <div class="cmp-row" role="row">
+          <span role="rowheader">1930 helpline</span>
+          <span role="cell" data-k="Covers">Any, after money is lost</span>
+          <span role="cell" data-k="Needs you to act">Yes, you call after the loss</span>
+          <span role="cell" data-k="Sees the ring">Not for you</span>
+          <span role="cell" data-k="Takes">Your identity and bank details</span>
+        </div>
+        <div class="cmp-row" role="row">
+          <span role="rowheader">Google scam protection</span>
+          <span role="cell" data-k="Covers">Calls and SMS, on supported Android phones</span>
+          <span role="cell" data-k="Needs you to act">No</span>
+          <span role="cell" data-k="Sees the ring">No</span>
+          <span role="cell" data-k="Takes">Google Phone and Messages as your default apps</span>
+        </div>
+      </div>
+      <p class="caption lo cmp-note">JAAL drafts your Chakshu report and puts 1930 one tap away. It works with them, not instead of them.</p>
+    </div>
+  </section>
+
+  <!-- PRIVACY -->
+  <section class="s" id="privacy">
+    <div class="wrap">
+      <p class="eyebrow"><span class="idx">06</span> Privacy</p>
+      <h2 class="h">We only keep what the scammer sent. Never you.</h2>
+      <ul class="promises">
+        <li><b>No contacts</b><span>Your address book is never read, on any platform.</span></li>
+        <li><b>No account</b><span>No sign-up, no phone number, no email to use JAAL.</span></li>
+        <li><b>No accessibility service</b><span>The Android app reads notifications you allow, nothing on your screen.</span></li>
+        <li><b>On-device baseline</b><span>What is normal for you is learned and kept on your device.</span></li>
+        <li><b>Hashed reporters</b><span>A report is tied to a salted device hash, never a person.</span></li>
+        <li><b>Dispute in one tap</b><span>Anyone can dispute an identifier. Its reports are held while we review.</span></li>
+      </ul>
+      <a class="btn" href="/privacy.html">Read the privacy page <span data-icon="arrow"></span></a>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="s" id="pricing">
+    <div class="wrap">
+      <p class="eyebrow"><span class="idx">07</span> Pricing</p>
+      <h2 class="h">Free for you. ₹149 a month to cover your whole family.</h2>
+      <div class="plans">
+        <article class="plan">
+          <h3>Free</h3>
+          <p class="price num">₹0</p>
+          <ul><li>5 manual checks a day</li><li>Automatic checks in Chrome and Android</li><li>Chakshu drafts and 1930 in one tap</li></ul>
+          <a class="btn block" href="/extension.zip" download>Add to Chrome</a>
+        </article>
+        <article class="plan featured">
+          <div class="plan-top"><h3>Family Shield</h3><span class="caption plan-tag">For parents</span></div>
+          <p class="price num">₹149<span class="caption lo"> / month</span></p>
+          <ul><li>Unlimited checks</li><li>Alerts on your phone when a parent sees a confirmed ring</li><li>Up to 5 devices, paired with a 6-digit code</li><li>Priority dispute review</li></ul>
+          <button class="btn primary block" type="button" id="buyDodo">Start Family Shield</button>
+          <button class="btn ghost block" type="button" id="buyCrypto">Pay with Cake Wallet (XMR/BTC, no account)</button>
+        </article>
+        <article class="plan">
+          <h3>JAAL API</h3>
+          <p class="price">Metered</p>
+          <ul><li>Per-check pricing for banks, PSPs and telcos</li><li>Hash-prefix lookups, nothing personal sent</li><li>Read-only MCP server for agents</li></ul>
+          <a class="btn block" href="mailto:api@jaal.app?subject=JAAL%20API">Talk to us</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section class="s" id="download">
+    <div class="wrap">
+      <p class="eyebrow"><span class="idx">08</span> Get JAAL</p>
+      <h2 class="h">Start where you read your messages.</h2>
+      <div class="dl">
+        <a class="dl-card primary-dl" href="/extension.zip" download>
+          <span class="dl-ic" data-icon="chrome"></span>
+          <span><b>Chrome extension</b><span class="caption lo">WhatsApp Web, Telegram Web, Gmail, downloads and every paste.</span></span>
+          <span class="dl-go" data-icon="download"></span>
+        </a>
+        <a class="dl-card" href="/jaal.apk" download>
+          <span class="dl-ic" data-icon="android"></span>
+          <span><b>Android app (APK)</b><span class="caption lo">Notifications, clipboard and calls. No accessibility service.</span></span>
+          <span class="dl-go" data-icon="download"></span>
+        </a>
+      </div>
+      <p class="caption lo dl-note">No smartphone? Forward any message to the JAAL Telegram bot and get the same answer. <a href="/extension.html">Chrome install steps</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div>
+      <a class="brand" href="/"><span data-icon="mark" style="color:var(--brand);display:inline-flex"></span>jaal</a>
+      <p style="margin-top:8px;max-width:36ch">जाल means net. Built in India, for the people scam rings call first.</p>
+    </div>
+    <div><h4>Product</h4><ul><li><a href="/check.html">Check something</a></li><li><a href="/guardian.html">Family Shield</a></li><li><a href="/extension.html">Install</a></li></ul></div>
+    <div><h4>Trust</h4><ul><li><a href="/privacy.html">Privacy</a></li><li><a href="/privacy.html#dispute">Dispute a report</a></li><li><a href="tel:1930">Call 1930</a></li></ul></div>
+    <div><h4>Graph</h4><ul><li><a href="#rings">Ring of the day</a></li><li><a href="/api/stats">Public stats API</a></li><li><a href="/api/health">Status</a></li></ul></div>
+  </div>
+</footer>
+
+<dialog class="sheet" id="cryptoSheet" aria-labelledby="cryptoTitle">
+  <div class="in">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <h3 id="cryptoTitle" style="font:var(--t-verdict)">Pay with Cake Wallet</h3>
+      <button class="btn ghost sm" type="button" id="cryptoClose" aria-label="Close" data-icon="close"></button>
+    </div>
+    <p class="caption lo">Family Shield, 1 month. No account, no email. Scan in Cake Wallet or open the link on this device.</p>
+    <div class="seg" role="tablist" aria-label="Currency">
+      <button role="tab" type="button" data-asset="xmr" aria-selected="true">Monero (XMR)</button>
+      <button role="tab" type="button" data-asset="btc" aria-selected="false">Bitcoin (BTC)</button>
+    </div>
+    <div class="qr" id="cryptoQr" aria-label="Payment QR code" role="img"></div>
+    <div class="crypto-meta">
+      <div><span class="caption lo">Amount</span><b class="num" id="cryptoAmt">—</b></div>
+      <div><span class="caption lo">Reference</span><b class="num" id="cryptoRef">—</b></div>
+    </div>
+    <button class="addr" type="button" id="cryptoAddr" title="Copy address"><span id="cryptoAddrText">—</span><span data-icon="copy"></span></button>
+    <a class="btn primary block" id="cryptoOpen" href="#">Open in Cake Wallet</a>
+  </div>
+</dialog>
+</body>
+</html>

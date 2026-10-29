@@ -1,0 +1,1 @@
+{ "name": "JAAL", "short_name": "JAAL", "start_url": "/check.html", "display": "standalone", "background_color": "#0A0C0F", "theme_color": "#0A0C0F", "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }] }
