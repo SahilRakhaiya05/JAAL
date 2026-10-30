@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Network: /api/check, /api/prefixes, guardian endpoints. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required by JobScheduler for the network-constrained periodic sync job. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Overlay verdict card (TYPE_APPLICATION_OVERLAY). User grants in Settings. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- Guardian alerts + fallback verdict notification (runtime on API 33+). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- One haptic tap on a confirmed verdict. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Optional: call state (ringing/offhook/idle) for the on-device personal layer. No call log. -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- Package visibility (API 30+): only the remote-access apps we watch for, plus UPI apps. -->
+    <queries>
+        <package android:name="com.anydesk.anydeskandroid" />
+        <package android:name="com.teamviewer.quicksupport.market" />
+        <package android:name="com.teamviewer.teamviewer.market.mobile" />
+        <package android:name="com.teamviewer.host.market" />
+        <package android:name="com.sand.airdroid" />
+        <package android:name="com.sand.airdroidbiz" />
+        <package android:name="com.carriez.flutter_hbb" />
+        <package android:name="com.splashtop.remote.pad.v2" />
+        <package android:name="com.splashtop.sos" />
+        <package android:name="com.nanosystems.supremo" />
+        <package android:name="com.ultraviewer.android" />
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".JaalApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Jaal"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="35">
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.OnboardingActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.VerdictActivity"
+            android:exported="false"
+            android:taskAffinity=""
+            android:excludeFromRecents="false" />
+
+        <!-- "Share to JAAL": any app's share sheet (text/plain) -> check. Also hosts the clipboard check. -->
+        <activity
+            android:name=".ui.CheckActivity"
+            android:exported="true"
+            android:label="@string/share_target_label"
+            android:theme="@style/Theme.Jaal.Translucent"
+            android:excludeFromRecents="true"
+            android:taskAffinity="">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".service.JaalNotificationListener"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.JaalCallScreeningService"
+            android:exported="true"
+            android:permission="android.permission.BIND_SCREENING_SERVICE">
+            <intent-filter>
+                <action android:name="android.telecom.CallScreeningService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.ClipboardTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile"
+            android:label="@string/tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.JaalJobService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+    </application>
+</manifest>

@@ -1,0 +1,753 @@
+[
+ {
+  "text": "URGENT: Your SBI KYC expired, account will be blocked today. Update at http://sbi-kyc-update.xyz/login or call +91 98765 43210. Pay Rs 10 fee to refund.desk@ybl. A/c no 123456789012 IFSC SBIN0001234. Install anydesk.",
+  "ctx": {},
+  "score": 0.992,
+  "level": "trigger",
+  "triggers": [
+   "kyc",
+   "block",
+   "refund",
+   "urgent",
+   "screenshare",
+   "pay"
+  ],
+  "identifiers": [
+   {
+    "type": "url",
+    "value": "http://sbi-kyc-update.xyz/login",
+    "raw": "http://sbi-kyc-update.xyz/login",
+    "key": "url:http://sbi-kyc-update.xyz/login",
+    "shortener": false,
+    "prefix": "14447bfa"
+   },
+   {
+    "type": "domain",
+    "value": "sbi-kyc-update.xyz",
+    "raw": "sbi-kyc-update.xyz",
+    "key": "domain:sbi-kyc-update.xyz",
+    "prefix": "cc544fcd"
+   },
+   {
+    "type": "upi",
+    "value": "refund.desk@ybl",
+    "raw": "refund.desk@ybl",
+    "key": "upi:refund.desk@ybl",
+    "knownPsp": true,
+    "prefix": "1ab52bbb"
+   },
+   {
+    "type": "phone",
+    "value": "+919876543210",
+    "raw": "+91 98765 43210",
+    "key": "phone:+919876543210",
+    "prefix": "292c066f"
+   },
+   {
+    "type": "ifsc",
+    "value": "SBIN0001234",
+    "raw": "SBIN0001234",
+    "key": "ifsc:SBIN0001234",
+    "prefix": "688e858e"
+   },
+   {
+    "type": "bank_account",
+    "value": "123456789012",
+    "raw": "123456789012 ",
+    "key": "bank_account:123456789012",
+    "prefix": "e07674d9"
+   },
+   {
+    "type": "remote_app",
+    "value": "anydesk",
+    "raw": "anydesk",
+    "key": "remote_app:anydesk",
+    "prefix": "db470d11"
+   }
+  ]
+ },
+ {
+  "text": "hey are we meeting at 5 tomorrow?",
+  "ctx": {},
+  "score": 0.1,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": []
+ },
+ {
+  "text": "Dear customer, refund of Rs 4,999 pending. Share OTP to receive. Pay to refund.desk@ybl now",
+  "ctx": {},
+  "score": 0.69,
+  "level": "trigger",
+  "triggers": [
+   "otp",
+   "refund"
+  ],
+  "identifiers": [
+   {
+    "type": "upi",
+    "value": "refund.desk@ybl",
+    "raw": "refund.desk@ybl",
+    "key": "upi:refund.desk@ybl",
+    "knownPsp": true,
+    "prefix": "1ab52bbb"
+   }
+  ]
+ },
+ {
+  "text": "Congratulations! You have won KBC lottery Rs 25,00,000. Contact 09123456789 or WhatsApp +92 3001234567. Processing fee Rs 5000 to account number: 5010 0123 4567 89 HDFC0001234",
+  "ctx": {},
+  "score": 0.55,
+  "level": "check",
+  "triggers": [
+   "prize",
+   "pay"
+  ],
+  "identifiers": [
+   {
+    "type": "phone",
+    "value": "+919123456789",
+    "raw": "09123456789",
+    "key": "phone:+919123456789",
+    "prefix": "7a98e969"
+   },
+   {
+    "type": "ifsc",
+    "value": "HDFC0001234",
+    "raw": "HDFC0001234",
+    "key": "ifsc:HDFC0001234",
+    "prefix": "1e3f5f65"
+   },
+   {
+    "type": "bank_account",
+    "value": "50100123456789",
+    "raw": "5010 0123 4567 89 ",
+    "key": "bank_account:50100123456789",
+    "prefix": "962a26ba"
+   }
+  ]
+ },
+ {
+  "text": "Your FedEx parcel seized by customs, contains drugs. CBI officer will call. Digital arrest warrant issued. Join video call on skype.",
+  "ctx": {},
+  "score": 0.622,
+  "level": "trigger",
+  "triggers": [
+   "arrest",
+   "parcel"
+  ],
+  "identifiers": []
+ },
+ {
+  "text": "Part time job: like YouTube videos, earn Rs 3000 daily income. Telegram task. Visit https://bit.ly/3xYz9Ab today itself",
+  "ctx": {},
+  "score": 0.599,
+  "level": "check",
+  "triggers": [
+   "job",
+   "urgent",
+   "shortlink"
+  ],
+  "identifiers": [
+   {
+    "type": "url",
+    "value": "https://bit.ly/3xYz9Ab",
+    "raw": "https://bit.ly/3xYz9Ab",
+    "key": "url:https://bit.ly/3xYz9Ab",
+    "shortener": true,
+    "prefix": "ac66af4c"
+   },
+   {
+    "type": "domain",
+    "value": "bit.ly",
+    "raw": "bit.ly",
+    "key": "domain:bit.ly",
+    "prefix": "25c1cdb0"
+   }
+  ]
+ },
+ {
+  "text": "Electricity connection will be disconnected tonight at 9:30 pm. Call officer 7896541230 immediately. bijli vibhag",
+  "ctx": {},
+  "score": 0.332,
+  "level": "check",
+  "triggers": [
+   "bill",
+   "urgent"
+  ],
+  "identifiers": [
+   {
+    "type": "phone",
+    "value": "+917896541230",
+    "raw": "7896541230",
+    "key": "phone:+917896541230",
+    "prefix": "57d854c9"
+   }
+  ]
+ },
+ {
+  "text": "Download this app to update: http://WWW.PM-Kisan-Yojana.Online/apk/PMKisan_v2.APK?ref=wa&x=1#top.",
+  "ctx": {},
+  "score": 0.401,
+  "level": "check",
+  "triggers": [
+   "apk"
+  ],
+  "identifiers": [
+   {
+    "type": "url",
+    "value": "http://pm-kisan-yojana.online/apk/PMKisan_v2.APK?ref=wa&x=1",
+    "raw": "http://WWW.PM-Kisan-Yojana.Online/apk/PMKisan_v2.APK?ref=wa&x=1#top.",
+    "key": "url:http://pm-kisan-yojana.online/apk/PMKisan_v2.APK?ref=wa&x=1",
+    "shortener": false,
+    "prefix": "c987383d"
+   },
+   {
+    "type": "domain",
+    "value": "pm-kisan-yojana.online",
+    "raw": "pm-kisan-yojana.online",
+    "key": "domain:pm-kisan-yojana.online",
+    "prefix": "78e4eb01"
+   },
+   {
+    "type": "apk",
+    "value": "pmkisan_v2.apk",
+    "raw": "PMKisan_v2.APK",
+    "key": "apk:pmkisan_v2.apk",
+    "prefix": "acde9f2d"
+   }
+  ]
+ },
+ {
+  "text": "Send USDT deposit to TQ5hJpRxSZgYBvH3XgM8w6cZqR2b5bQkLx or btc wallet bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh or 0x52908400098527886E0F7030069857D2E4169EE7",
+  "ctx": {},
+  "score": 0.198,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": [
+   {
+    "type": "phone",
+    "value": "+917030069857",
+    "raw": "7030069857",
+    "key": "phone:+917030069857",
+    "prefix": "97d901ea"
+   },
+   {
+    "type": "crypto",
+    "value": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+    "raw": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+    "key": "crypto:bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+    "chain": "btc",
+    "prefix": "f22263a1"
+   },
+   {
+    "type": "crypto",
+    "value": "0x52908400098527886e0f7030069857d2e4169ee7",
+    "raw": "0x52908400098527886E0F7030069857D2E4169EE7",
+    "key": "crypto:0x52908400098527886e0f7030069857d2e4169ee7",
+    "chain": "eth",
+    "prefix": "340b7849"
+   },
+   {
+    "type": "crypto",
+    "value": "TQ5hJpRxSZgYBvH3XgM8w6cZqR2b5bQkLx",
+    "raw": "TQ5hJpRxSZgYBvH3XgM8w6cZqR2b5bQkLx",
+    "key": "crypto:TQ5hJpRxSZgYBvH3XgM8w6cZqR2b5bQkLx",
+    "chain": "trx",
+    "prefix": "f397a699"
+   }
+  ]
+ },
+ {
+  "text": "Legacy btc address 1BoatSLRHtKNngkdXEeobR76b53LETtpyT for bitcoin deposit",
+  "ctx": {},
+  "score": 0.198,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": [
+   {
+    "type": "crypto",
+    "value": "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
+    "raw": "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
+    "key": "crypto:1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
+    "chain": "btc",
+    "prefix": "dced075f"
+   }
+  ]
+ },
+ {
+  "text": "Mail me at rahul.sharma@gmail.com about the meeting, version 2.4.1 released on example.com",
+  "ctx": {},
+  "score": 0.1,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": [
+   {
+    "type": "domain",
+    "value": "example.com",
+    "raw": "example.com",
+    "key": "domain:example.com",
+    "prefix": "ed152b32"
+   }
+  ]
+ },
+ {
+  "text": "आपका खाता बंद हो जाएगा। तुरंत केवाईसी अपडेट करें: sbi-kyc.co.in/verify पर जाएं। ओटीपी किसी को न बताएं",
+  "ctx": {},
+  "score": 0.802,
+  "level": "trigger",
+  "triggers": [
+   "otp",
+   "kyc",
+   "urgent"
+  ],
+  "identifiers": [
+   {
+    "type": "domain",
+    "value": "sbi-kyc.co.in",
+    "raw": "sbi-kyc.co.in",
+    "key": "domain:sbi-kyc.co.in",
+    "prefix": "f4ed47aa"
+   },
+   {
+    "type": "url",
+    "value": "http://sbi-kyc.co.in/verify",
+    "raw": "sbi-kyc.co.in/verify",
+    "key": "url:http://sbi-kyc.co.in/verify",
+    "shortener": false,
+    "prefix": "614c50cd"
+   }
+  ]
+ },
+ {
+  "text": "તમારું એકાઉન્ટ બંધ થશે. ઓટીપી શેર કરો અને પિન દાખલ કરો. ધરપકડ વોરંટ",
+  "ctx": {},
+  "score": 0.937,
+  "level": "trigger",
+  "triggers": [
+   "otp",
+   "pin",
+   "arrest"
+  ],
+  "identifiers": []
+ },
+ {
+  "text": "Your UPI PIN is needed to receive cashback of ₹500 from paytm. Pay ₹1 to verify: cashback.offer@okaxis",
+  "ctx": {},
+  "score": 0.846,
+  "level": "trigger",
+  "triggers": [
+   "pin",
+   "refund",
+   "pay"
+  ],
+  "identifiers": [
+   {
+    "type": "upi",
+    "value": "cashback.offer@okaxis",
+    "raw": "cashback.offer@okaxis",
+    "key": "upi:cashback.offer@okaxis",
+    "knownPsp": true,
+    "prefix": "cec027a8"
+   }
+  ]
+ },
+ {
+  "text": "Guaranteed returns 30% profit monthly! Join VIP group https://t.me/stocktipsvip and trading app www.quickprofit.top",
+  "ctx": {},
+  "score": 0.332,
+  "level": "check",
+  "triggers": [
+   "invest"
+  ],
+  "identifiers": [
+   {
+    "type": "url",
+    "value": "https://t.me/stocktipsvip",
+    "raw": "https://t.me/stocktipsvip",
+    "key": "url:https://t.me/stocktipsvip",
+    "shortener": false,
+    "prefix": "e6e12610"
+   },
+   {
+    "type": "domain",
+    "value": "t.me",
+    "raw": "t.me",
+    "key": "domain:t.me",
+    "prefix": "5e8a0fe9"
+   },
+   {
+    "type": "domain",
+    "value": "quickprofit.top",
+    "raw": "quickprofit.top",
+    "key": "domain:quickprofit.top",
+    "prefix": "cf9cfdb2"
+   }
+  ]
+ },
+ {
+  "text": "Your account will be suspended. Visit secure-login.hdfcbank.com.verify-now.xyz/update to keep using netbanking",
+  "ctx": {},
+  "score": 0.332,
+  "level": "check",
+  "triggers": [
+   "block"
+  ],
+  "identifiers": [
+   {
+    "type": "domain",
+    "value": "verify-now.xyz",
+    "raw": "secure-login.hdfcbank.com.verify-now.xyz",
+    "key": "domain:verify-now.xyz",
+    "prefix": "728c42b0"
+   },
+   {
+    "type": "url",
+    "value": "http://secure-login.hdfcbank.com.verify-now.xyz/update",
+    "raw": "secure-login.hdfcbank.com.verify-now.xyz/update",
+    "key": "url:http://secure-login.hdfcbank.com.verify-now.xyz/update",
+    "shortener": false,
+    "prefix": "d541c88d"
+   }
+  ]
+ },
+ {
+  "text": "Install TeamViewer QuickSupport and share the code 123 456 789 so our executive can help with remote support",
+  "ctx": {},
+  "score": 0.332,
+  "level": "check",
+  "triggers": [
+   "screenshare"
+  ],
+  "identifiers": [
+   {
+    "type": "remote_app",
+    "value": "teamviewer",
+    "raw": "teamviewer",
+    "key": "remote_app:teamviewer",
+    "prefix": "0203ff7a"
+   },
+   {
+    "type": "remote_app",
+    "value": "quicksupport",
+    "raw": "quicksupport",
+    "key": "remote_app:quicksupport",
+    "prefix": "bb33018c"
+   }
+  ]
+ },
+ {
+  "text": "Call me on 98200 12345 when free. Also my khata no. 30987654321 for the rent, ifsc ICIC0000123",
+  "ctx": {},
+  "score": 0.198,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": [
+   {
+    "type": "phone",
+    "value": "+919820012345",
+    "raw": "98200 12345",
+    "key": "phone:+919820012345",
+    "prefix": "d6725bf4"
+   },
+   {
+    "type": "ifsc",
+    "value": "ICIC0000123",
+    "raw": "ICIC0000123",
+    "key": "ifsc:ICIC0000123",
+    "prefix": "ac22e733"
+   },
+   {
+    "type": "bank_account",
+    "value": "30987654321",
+    "raw": "30987654321 ",
+    "key": "bank_account:30987654321",
+    "prefix": "c9c4f7d1"
+   }
+  ]
+ },
+ {
+  "text": "Visit http://192.168.1.10:8080/admin or http://0x7f.1/x/../y/./z/ now",
+  "ctx": {},
+  "score": 0.154,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": [
+   {
+    "type": "url",
+    "value": "http://192.168.1.10/admin",
+    "raw": "http://192.168.1.10:8080/admin",
+    "key": "url:http://192.168.1.10/admin",
+    "shortener": false,
+    "prefix": "93272309"
+   },
+   {
+    "type": "url",
+    "value": "http://127.0.0.1/y/z",
+    "raw": "http://0x7f.1/x/../y/./z/",
+    "key": "url:http://127.0.0.1/y/z",
+    "shortener": false,
+    "prefix": "8ff231ab"
+   }
+  ]
+ },
+ {
+  "text": "Pay Rs 10 at https://pay.example.co.in/a%20b/c?x=\"y\"&z='w' urgent",
+  "ctx": {},
+  "score": 0.401,
+  "level": "check",
+  "triggers": [
+   "urgent",
+   "pay"
+  ],
+  "identifiers": [
+   {
+    "type": "url",
+    "value": "https://pay.example.co.in/a%20b/c?x=",
+    "raw": "https://pay.example.co.in/a%20b/c?x=",
+    "key": "url:https://pay.example.co.in/a%20b/c?x=",
+    "shortener": false,
+    "prefix": "63b95814"
+   },
+   {
+    "type": "domain",
+    "value": "example.co.in",
+    "raw": "pay.example.co.in",
+    "key": "domain:example.co.in",
+    "prefix": "735486b0"
+   }
+  ]
+ },
+ {
+  "text": "Ｐａｙ ＲＳ １０ ｔｏ ｆｕｌｌｗｉｄｔｈ＠ｙｂｌ",
+  "ctx": {},
+  "score": 0.198,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": [
+   {
+    "type": "upi",
+    "value": "fullwidth@ybl",
+    "raw": "fullwidth@ybl",
+    "key": "upi:fullwidth@ybl",
+    "knownPsp": true,
+    "prefix": "a4ea60e2"
+   }
+  ]
+ },
+ {
+  "text": "Your Amazon order #402-1234567-1234567 has shipped. Track at amazon.in/orders",
+  "ctx": {},
+  "score": 0.154,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": [
+   {
+    "type": "domain",
+    "value": "amazon.in",
+    "raw": "amazon.in",
+    "key": "domain:amazon.in",
+    "prefix": "c1c321c6"
+   },
+   {
+    "type": "url",
+    "value": "http://amazon.in/orders",
+    "raw": "amazon.in/orders",
+    "key": "url:http://amazon.in/orders",
+    "shortener": false,
+    "prefix": "f6ee9ff6"
+   }
+  ]
+ },
+ {
+  "text": "Win prize, call 9876543210, account 9876543210 wala",
+  "ctx": {},
+  "score": 0.214,
+  "level": "check",
+  "triggers": [
+   "prize"
+  ],
+  "identifiers": [
+   {
+    "type": "phone",
+    "value": "+919876543210",
+    "raw": "9876543210",
+    "key": "phone:+919876543210",
+    "prefix": "292c066f"
+   }
+  ]
+ },
+ {
+  "text": "Scan https://wa.me/919876543210 and also https://tinyurl.com/abc123), and rb.gy/xyz!",
+  "ctx": {},
+  "score": 0.25,
+  "level": "check",
+  "triggers": [
+   "shortlink"
+  ],
+  "identifiers": [
+   {
+    "type": "url",
+    "value": "https://wa.me/919876543210",
+    "raw": "https://wa.me/919876543210",
+    "key": "url:https://wa.me/919876543210",
+    "shortener": true,
+    "prefix": "8c473aa2"
+   },
+   {
+    "type": "domain",
+    "value": "wa.me",
+    "raw": "wa.me",
+    "key": "domain:wa.me",
+    "prefix": "bb1b78a4"
+   },
+   {
+    "type": "url",
+    "value": "https://tinyurl.com/abc123",
+    "raw": "https://tinyurl.com/abc123",
+    "key": "url:https://tinyurl.com/abc123",
+    "shortener": true,
+    "prefix": "18d64373"
+   },
+   {
+    "type": "domain",
+    "value": "tinyurl.com",
+    "raw": "tinyurl.com",
+    "key": "domain:tinyurl.com",
+    "prefix": "04b250b4"
+   },
+   {
+    "type": "phone",
+    "value": "+919876543210",
+    "raw": "919876543210",
+    "key": "phone:+919876543210",
+    "prefix": "292c066f"
+   }
+  ]
+ },
+ {
+  "text": "hi",
+  "ctx": {
+   "onCall": true
+  },
+  "score": 0.269,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": []
+ },
+ {
+  "text": "Pay 500 to merchant.store@icici for order",
+  "ctx": {
+   "onCall": true,
+   "unknownSender": true
+  },
+  "score": 0.75,
+  "level": "trigger",
+  "triggers": [
+   "pay"
+  ],
+  "identifiers": [
+   {
+    "type": "domain",
+    "value": "merchant.store",
+    "raw": "merchant.store",
+    "key": "domain:merchant.store",
+    "prefix": "b4bf9a47"
+   },
+   {
+    "type": "upi",
+    "value": "merchant.store@icici",
+    "raw": "merchant.store@icici",
+    "key": "upi:merchant.store@icici",
+    "knownPsp": true,
+    "prefix": "93390ed1"
+   }
+  ]
+ },
+ {
+  "text": "Pay 500 to merchant.store@icici for order",
+  "ctx": {},
+  "score": 0.332,
+  "level": "check",
+  "triggers": [
+   "pay"
+  ],
+  "identifiers": [
+   {
+    "type": "domain",
+    "value": "merchant.store",
+    "raw": "merchant.store",
+    "key": "domain:merchant.store",
+    "prefix": "b4bf9a47"
+   },
+   {
+    "type": "upi",
+    "value": "merchant.store@icici",
+    "raw": "merchant.store@icici",
+    "key": "upi:merchant.store@icici",
+    "knownPsp": true,
+    "prefix": "93390ed1"
+   }
+  ]
+ },
+ {
+  "text": "Monero 44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A send",
+  "ctx": {},
+  "score": 0.198,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": [
+   {
+    "type": "crypto",
+    "value": "44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A",
+    "raw": "44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A",
+    "key": "crypto:44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3RVGQBEP3A",
+    "chain": "xmr",
+    "prefix": "54acd48c"
+   }
+  ]
+ },
+ {
+  "text": "pay refund.helpdesk@axl now",
+  "ctx": {},
+  "score": 0.354,
+  "level": "check",
+  "triggers": [
+   "refund"
+  ],
+  "identifiers": [
+   {
+    "type": "upi",
+    "value": "refund.helpdesk@axl",
+    "raw": "refund.helpdesk@axl",
+    "key": "upi:refund.helpdesk@axl",
+    "knownPsp": true,
+    "prefix": "b23e8690"
+   }
+  ]
+ },
+ {
+  "text": "visit x.inside, then sbi-kyc-update.in/login",
+  "ctx": {},
+  "score": 0.154,
+  "level": "ignore",
+  "triggers": [],
+  "identifiers": [
+   {
+    "type": "domain",
+    "value": "sbi-kyc-update.in",
+    "raw": "sbi-kyc-update.in",
+    "key": "domain:sbi-kyc-update.in",
+    "prefix": "ea7684a0"
+   },
+   {
+    "type": "url",
+    "value": "http://sbi-kyc-update.in/login",
+    "raw": "sbi-kyc-update.in/login",
+    "key": "url:http://sbi-kyc-update.in/login",
+    "shortener": false,
+    "prefix": "08f98ba5"
+   }
+  ]
+ }
+]
