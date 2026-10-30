@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pay (JAAL demo)</title><link rel="stylesheet" href="demo.css"></head>
+<body>
+  <div class="banner"><b>JAAL demo · Pay.</b> A generic payment form. Nothing is sent anywhere. <a href="index.html">All demos</a></div>
+  <div class="app">
+    <header><div class="avatar" aria-hidden="true">₹</div><div class="who"><b>Pay</b><span>Send money by UPI</span></div></header>
+    <form class="form" id="f">
+      <div class="hint">The chat asked you to pay <code id="h1">refund.desk@ybl</code> <button type="button" id="copy1">Copy</button> &nbsp;Then paste it below with Ctrl+V.<br>A second handle from the same chat: <code id="h2">refundcare.desk@axl</code> <button type="button" id="copy2">Copy</button></div>
+      <label>UPI ID<input id="upi" name="upi" autocomplete="off" placeholder="name@bank"></label>
+      <label>Amount (₹)<input name="amt" inputmode="numeric" value="10"></label>
+      <div><button class="primary" type="submit">Pay ₹10</button></div>
+      <p id="msg" class="hint" hidden>Demo only: no payment was made.</p>
+    </form>
+  </div>
+  <script src="pay.js"></script>
+  <script src="boot.js"></script>
+</body>
+</html>

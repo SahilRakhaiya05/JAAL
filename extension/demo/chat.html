@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Chat (JAAL demo)</title><link rel="stylesheet" href="demo.css"></head>
+<body>
+  <div class="banner"><b>JAAL demo · Chat.</b> A generic chat page. <a href="index.html">All demos</a></div>
+  <div class="app">
+    <header><div class="avatar" aria-hidden="true">?</div><div class="who"><b>+91 98765 43210</b><span>Not in your contacts</span></div></header>
+    <div class="thread" id="thread" data-jaal-pane role="list" aria-label="Messages">
+      <div class="msg in" data-msg data-direction="in" role="listitem"><span class="text" data-text>Hello sir, this is the customer support desk.</span><span class="time">10:41</span></div>
+      <div class="msg out" data-msg data-direction="out" role="listitem"><span class="text" data-text>Who is this? What is this about?</span><span class="time">10:42</span></div>
+    </div>
+    <div class="controls">
+      <button class="primary" id="next" type="button">Receive next message</button>
+      <button id="weak" type="button">Receive a low-signal message</button>
+      <button id="mine" type="button">Send my own reply (ignored)</button>
+    </div>
+  </div>
+  <script src="chat.js"></script>
+  <script src="boot.js"></script>
+</body>
+</html>
