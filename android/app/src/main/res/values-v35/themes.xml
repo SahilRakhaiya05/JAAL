@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 15 enforces edge-to-edge at targetSdk 35; keep classic insets for these simple screens. -->
+    <style name="Theme.Jaal" parent="Base.Theme.Jaal">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
+</resources>

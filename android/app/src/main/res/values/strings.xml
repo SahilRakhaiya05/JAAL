@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copy rules (SPEC): say "reported" and "ring", never "fraud". Numbers, not adjectives. State and offer, never command. -->
+<resources>
+    <string name="app_name" translatable="false">JAAL</string>
+    <string name="share_target_label">Check with JAAL</string>
+    <string name="tile_label">Check clipboard</string>
+
+    <!-- Onboarding -->
+    <string name="onb_title">JAAL checks what arrives against reported scam rings.</string>
+    <string name="onb_reads_title">What JAAL reads</string>
+    <string name="onb_reads_1">The title and text of notifications that arrive on this phone. Almost everything is discarded on the phone itself.</string>
+    <string name="onb_reads_2">Only numbers, UPI handles, accounts and links from suspicious messages are checked with the JAAL server.</string>
+    <string name="onb_reads_3">Optional: the number of an incoming call from someone not in your contacts (call screening). Calls are never blocked.</string>
+    <string name="onb_never_title">What JAAL never reads</string>
+    <string name="onb_never_1">Your contacts, your screen, or your message history. JAAL does not use an Accessibility Service.</string>
+    <string name="onb_never_2">Your payment habits. They are learned and kept only on this phone.</string>
+    <string name="grant_notif">Allow notification access</string>
+    <string name="grant_overlay">Allow display over other apps</string>
+    <string name="grant_call">Use JAAL for call screening (optional)</string>
+    <string name="grant_post">Allow JAAL notifications</string>
+    <string name="granted">Allowed</string>
+    <string name="onb_continue">Continue</string>
+
+    <!-- Home -->
+    <string name="status_on">Watching notifications</string>
+    <string name="status_off">Notification access is off</string>
+    <string name="status_overlay_off">Overlay is off. Verdicts will arrive as notifications.</string>
+    <string name="status_call_on">Call screening on</string>
+    <string name="status_call_off">Call screening off</string>
+    <string name="fix">Fix</string>
+    <string name="manual_title">Check something</string>
+    <string name="manual_hint">Paste a message, number, UPI handle or link</string>
+    <string name="check">Check</string>
+    <string name="check_clipboard">Check clipboard</string>
+    <string name="clipboard_banner">Copied text has %1$d identifiers. Check it?</string>
+    <string name="recent_title">Recent checks</string>
+    <string name="recent_empty">Nothing checked yet. Messages with no signal never leave this phone and are not stored.</string>
+    <string name="demo">Demo: post a sample scam notification</string>
+    <string name="settings">Settings</string>
+    <string name="guardian">Guardian</string>
+    <string name="checking">Checking…</string>
+    <string name="nothing_to_check">No numbers, UPI handles, accounts or links found in this text.</string>
+    <string name="clipboard_empty">Clipboard is empty.</string>
+    <string name="server_unreachable">Could not reach the JAAL server at %1$s.</string>
+
+    <!-- States -->
+    <string name="state_reported">Reported</string>
+    <string name="state_confirmed">Confirmed ring</string>
+    <string name="state_clear">No reports</string>
+    <string name="clear_headline">No reports for this yet</string>
+    <string name="clear_reason">None of these identifiers is in the JAAL graph today.</string>
+
+    <!-- Actions -->
+    <string name="action_details">See ring</string>
+    <string name="action_dismiss">Dismiss</string>
+    <string name="action_chakshu">Report on Chakshu</string>
+    <string name="action_copy_draft">Copy report draft</string>
+    <string name="action_call_1930">Call 1930</string>
+    <string name="action_share_family">Share with family</string>
+    <string name="action_dispute">This is mine: dispute</string>
+    <string name="action_mark_safe">I know this payee</string>
+    <string name="close">Close</string>
+
+    <!-- Detail -->
+    <string name="detail_identifiers">What was checked</string>
+    <string name="detail_ring">Ring</string>
+    <string name="detail_campaign">Campaign</string>
+    <string name="detail_signals">Signals in the text</string>
+    <string name="detail_personal">On this phone only</string>
+    <string name="detail_stats">%1$d reports · %2$d confirmed within 2 hops</string>
+    <string name="detail_campaign_line">%1$s · %2$d linked · first seen %3$s</string>
+    <string name="detail_id_line">%1$s · %2$d reports</string>
+    <string name="detail_engine">%1$s · %2$d ms</string>
+    <string name="draft_copied">Draft copied. Paste it into the Chakshu form.</string>
+    <string name="dispute_title">Dispute this listing</string>
+    <string name="dispute_hint">Why is this yours or safe?</string>
+    <string name="dispute_send">Send</string>
+    <string name="dispute_sent">Dispute sent for review.</string>
+    <string name="dispute_failed">Could not send. Opening email instead.</string>
+    <string name="marked_safe">Saved on this phone as a known payee.</string>
+    <string name="share_family_text">JAAL: %1$s. %2$s Checked: %3$s. Helpline 1930.</string>
+
+    <!-- Settings -->
+    <string name="settings_api">Server URL</string>
+    <string name="settings_api_note">Emulator: http://10.0.2.2:8787 · Phone on Wi-Fi: http://&lt;laptop LAN IP&gt;:8787</string>
+    <string name="save">Save</string>
+    <string name="saved">Saved</string>
+    <string name="test_connection">Test connection</string>
+    <string name="connection_ok">Connected (%1$s)</string>
+    <string name="settings_language">Language</string>
+    <string name="lang_en" translatable="false">English</string>
+    <string name="lang_hi" translatable="false">हिन्दी</string>
+    <string name="lang_gu" translatable="false">ગુજરાતી</string>
+
+    <!-- Guardian -->
+    <string name="guardian_title">Guardian mode</string>
+    <string name="guardian_protect_title">Protect this phone</string>
+    <string name="guardian_protect_body">On the phone you want to protect, make a code and enter it on the guardian\'s phone.</string>
+    <string name="guardian_generate">Make pairing code</string>
+    <string name="guardian_code">Pairing code %1$s</string>
+    <string name="guardian_guard_title">Guard someone</string>
+    <string name="guardian_guard_body">Enter the 6-digit code shown on the protected phone.</string>
+    <string name="guardian_code_hint">6-digit code</string>
+    <string name="guardian_link">Link as guardian</string>
+    <string name="guardian_linked">Linked. Confirmed rings on that phone will alert you here.</string>
+    <string name="guardian_parent_number">Their phone number (stays on this phone)</string>
+    <string name="guardian_poll_note">Alerts are checked every 60 seconds while JAAL is open, and about every 15 minutes in the background.</string>
+    <string name="guardian_poll_now">Check alerts now</string>
+    <string name="guardian_alert_title">Confirmed ring on a phone you guard</string>
+    <string name="guardian_call">Call</string>
+    <string name="guardian_failed">Could not reach the server.</string>
+    <string name="guardian_no_alerts">No alerts.</string>
+
+    <!-- Notifications -->
+    <string name="channel_verdicts">Verdicts</string>
+    <string name="channel_guardian">Guardian alerts</string>
+    <string name="channel_demo">Demo messages</string>
+    <string name="source_call">Incoming call</string>
+    <string name="source_demo">Messages (demo)</string>
+
+    <!-- Personal layer signals -->
+    <string name="personal_first_time_payee">First payment to this UPI handle</string>
+    <string name="personal_out_of_pattern">Amount or hour is unusual for you</string>
+    <string name="personal_call_plus_payment">Payment app active during an unknown call</string>
+    <string name="personal_install_plus_call">Remote access app installed during a call</string>
+</resources>

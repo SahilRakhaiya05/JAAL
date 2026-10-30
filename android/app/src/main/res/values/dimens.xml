@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_radius">20dp</dimen>
+    <dimen name="card_pad">20dp</dimen>
+    <dimen name="card_max_width">400dp</dimen>
+    <dimen name="card_side_gutter">16dp</dimen>
+    <dimen name="hairline">1dp</dimen>
+    <dimen name="rule_width">2dp</dimen>
+    <dimen name="chip_height">24dp</dimen>
+    <dimen name="tap">48dp</dimen>
+    <dimen name="ring_thumb">72dp</dimen>
+    <dimen name="ring_detail">240dp</dimen>
+
+    <dimen name="t_display">28sp</dimen>
+    <dimen name="t_verdict">22sp</dimen>
+    <dimen name="t_body">15sp</dimen>
+    <dimen name="t_caption">13sp</dimen>
+    <dimen name="t_micro">11sp</dimen>
+    <dimen name="lh_display">32sp</dimen>
+    <dimen name="lh_verdict">26sp</dimen>
+    <dimen name="lh_body">22sp</dimen>
+    <dimen name="lh_caption">18sp</dimen>
+    <dimen name="lh_micro">14sp</dimen>
+</resources>

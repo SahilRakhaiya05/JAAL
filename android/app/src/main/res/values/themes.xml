@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark first. Platform Material theme: no AppCompat dependency. -->
+    <style name="Base.Theme.Jaal" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">@color/brand</item>
+        <item name="android:colorPrimaryDark">@color/ink_900</item>
+        <item name="android:colorAccent">@color/brand</item>
+        <item name="android:colorBackground">@color/ink_900</item>
+        <item name="android:windowBackground">@color/ink_900</item>
+        <item name="android:statusBarColor">@color/ink_900</item>
+        <item name="android:navigationBarColor">@color/ink_900</item>
+        <item name="android:textColorPrimary">@color/text_hi</item>
+        <item name="android:textColorSecondary">@color/text_lo</item>
+        <item name="android:textColorHint">@color/text_lo</item>
+        <item name="android:colorControlNormal">@color/text_lo</item>
+        <item name="android:colorControlActivated">@color/brand</item>
+        <item name="android:colorEdgeEffect">@color/brand</item>
+    </style>
+
+    <style name="Theme.Jaal" parent="Base.Theme.Jaal" />
+
+    <style name="Theme.Jaal.Translucent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!-- Type scale (tokens.css). Weight 600 via textFontWeight on API 28+, medium family below. -->
+    <style name="T" />
+    <style name="T.Display">
+        <item name="android:textSize">@dimen/t_display</item>
+        <item name="android:lineHeight">@dimen/lh_display</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/text_hi</item>
+    </style>
+    <style name="T.Verdict">
+        <item name="android:textSize">@dimen/t_verdict</item>
+        <item name="android:lineHeight">@dimen/lh_verdict</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/text_hi</item>
+    </style>
+    <style name="T.Body">
+        <item name="android:textSize">@dimen/t_body</item>
+        <item name="android:lineHeight">@dimen/lh_body</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/text_hi</item>
+    </style>
+    <style name="T.Body.Lo">
+        <item name="android:textColor">@color/text_lo</item>
+    </style>
+    <style name="T.Caption">
+        <item name="android:textSize">@dimen/t_caption</item>
+        <item name="android:lineHeight">@dimen/lh_caption</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/text_lo</item>
+    </style>
+    <style name="T.Micro">
+        <item name="android:textSize">@dimen/t_micro</item>
+        <item name="android:lineHeight">@dimen/lh_micro</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/text_lo</item>
+    </style>
+    <style name="T.Section">
+        <item name="android:textSize">@dimen/t_caption</item>
+        <item name="android:lineHeight">@dimen/lh_caption</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/text_lo</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.06</item>
+    </style>
+
+    <style name="Btn" parent="android:Widget.Material.Button.Borderless">
+        <item name="android:minHeight">@dimen/tap</item>
+        <item name="android:minWidth">@dimen/tap</item>
+        <item name="android:textSize">@dimen/t_body</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+    <style name="Btn.Primary">
+        <item name="android:background">@drawable/bg_btn_primary</item>
+        <item name="android:textColor">@color/text_hi</item>
+    </style>
+    <style name="Btn.Secondary">
+        <item name="android:background">@drawable/bg_btn_secondary</item>
+        <item name="android:textColor">@color/text_hi</item>
+    </style>
+
+    <style name="Field">
+        <item name="android:background">@drawable/bg_field</item>
+        <item name="android:minHeight">@dimen/tap</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@color/text_hi</item>
+        <item name="android:textColorHint">@color/text_lo</item>
+        <item name="android:textSize">@dimen/t_body</item>
+    </style>
+
+    <style name="Panel">
+        <item name="android:background">@drawable/bg_panel</item>
+        <item name="android:padding">@dimen/card_pad</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+</resources>

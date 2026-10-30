@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Gujarati. NEEDS NATIVE REVIEW before release. Kept short; untranslated keys fall back to English. -->
+<resources>
+    <string name="share_target_label">JAAL થી તપાસો</string>
+    <string name="tile_label">ક્લિપબોર્ડ તપાસો</string>
+
+    <string name="onb_title">JAAL આવતા સંદેશાને રિપોર્ટ થયેલી સ્કેમ ટોળકીઓ સાથે મેળવે છે.</string>
+    <string name="onb_reads_title">JAAL શું વાંચે છે</string>
+    <string name="onb_reads_1">આ ફોન પર આવતી સૂચનાઓનું શીર્ષક અને લખાણ. લગભગ બધું ફોન પર જ કાઢી નખાય છે.</string>
+    <string name="onb_reads_2">ફક્ત શંકાસ્પદ સંદેશાના નંબર, UPI હેન્ડલ, ખાતા અને લિંક JAAL સર્વર સાથે તપાસાય છે.</string>
+    <string name="onb_reads_3">વૈકલ્પિક: અજાણ્યા નંબરથી આવતા કૉલનો નંબર. કૉલ ક્યારેય બ્લૉક થતો નથી.</string>
+    <string name="onb_never_title">JAAL શું ક્યારેય વાંચતું નથી</string>
+    <string name="onb_never_1">તમારા સંપર્કો, તમારી સ્ક્રીન કે જૂના સંદેશા. JAAL Accessibility Service વાપરતું નથી.</string>
+    <string name="onb_never_2">તમારી ચુકવણીની ટેવો. તે ફક્ત આ ફોન પર રહે છે.</string>
+    <string name="grant_notif">સૂચના ઍક્સેસ આપો</string>
+    <string name="grant_overlay">બીજી ઍપ ઉપર બતાવવા દો</string>
+    <string name="grant_call">કૉલ સ્ક્રીનિંગ માટે JAAL (વૈકલ્પિક)</string>
+    <string name="grant_post">JAAL સૂચનાઓ ચાલુ કરો</string>
+    <string name="granted">આપ્યું</string>
+    <string name="onb_continue">આગળ વધો</string>
+
+    <string name="status_on">સૂચનાઓ પર નજર છે</string>
+    <string name="status_off">સૂચના ઍક્સેસ બંધ છે</string>
+    <string name="manual_title">કંઈક તપાસો</string>
+    <string name="manual_hint">સંદેશ, નંબર, UPI હેન્ડલ કે લિંક પેસ્ટ કરો</string>
+    <string name="check">તપાસો</string>
+    <string name="check_clipboard">ક્લિપબોર્ડ તપાસો</string>
+    <string name="recent_title">તાજેતરની તપાસ</string>
+    <string name="settings">સેટિંગ્સ</string>
+    <string name="guardian">સંરક્ષક</string>
+    <string name="checking">તપાસ ચાલુ છે…</string>
+
+    <string name="state_reported">રિપોર્ટ થયેલું</string>
+    <string name="state_confirmed">પુષ્ટ ટોળકી</string>
+    <string name="state_clear">કોઈ રિપોર્ટ નથી</string>
+    <string name="clear_headline">હજુ સુધી કોઈ રિપોર્ટ નથી</string>
+
+    <string name="action_details">ટોળકી જુઓ</string>
+    <string name="action_dismiss">બંધ કરો</string>
+    <string name="action_chakshu">ચક્ષુ પર રિપોર્ટ કરો</string>
+    <string name="action_call_1930">1930 પર કૉલ કરો</string>
+    <string name="action_share_family">પરિવારને મોકલો</string>
+    <string name="action_dispute">આ મારું છે: વાંધો</string>
+    <string name="action_mark_safe">હું આને ઓળખું છું</string>
+    <string name="close">બંધ કરો</string>
+
+    <string name="settings_language">ભાષા</string>
+    <string name="save">સાચવો</string>
+    <string name="guardian_title">સંરક્ષક મોડ</string>
+    <string name="guardian_generate">પેરિંગ કોડ બનાવો</string>
+    <string name="guardian_link">સંરક્ષક તરીકે જોડો</string>
+    <string name="guardian_alert_title">તમે સાચવો છો તે ફોન પર પુષ્ટ ટોળકી</string>
+    <string name="guardian_call">કૉલ કરો</string>
+</resources>

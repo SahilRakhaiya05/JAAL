@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Design tokens, by value from jaal/shared/tokens.css (source of truth). -->
+<resources>
+    <color name="ink_900">#0A0C0F</color>
+    <color name="ink_700">#16191D</color>
+    <color name="ink_500">#2A2F35</color>
+    <color name="paper">#FBFAF7</color>
+    <color name="text_hi">#F4F3F0</color>
+    <color name="text_lo">#9BA1A8</color>
+    <color name="brand">#6E5BFF</color>
+    <color name="state_caution">#F2A93B</color>
+    <color name="state_confirmed">#E5484D</color>
+    <!-- 12% confirmed tint / 10% caution tint -->
+    <color name="state_confirmed_tint">#1FE5484D</color>
+    <color name="state_caution_tint">#1AF2A93B</color>
+    <!-- ring: non-coloured nodes text-lo @40%, edges @20% -->
+    <color name="node_dim">#669BA1A8</color>
+    <color name="edge_dim">#339BA1A8</color>
+    <color name="transparent">#00000000</color>
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hindi. NEEDS NATIVE REVIEW before release. Kept short; untranslated keys fall back to English. -->
+<resources>
+    <string name="share_target_label">JAAL से जाँचें</string>
+    <string name="tile_label">क्लिपबोर्ड जाँचें</string>
+
+    <string name="onb_title">JAAL आने वाले संदेशों को रिपोर्ट हुए स्कैम गिरोहों से मिलाता है।</string>
+    <string name="onb_reads_title">JAAL क्या पढ़ता है</string>
+    <string name="onb_reads_1">इस फ़ोन पर आने वाली सूचनाओं का शीर्षक और टेक्स्ट। लगभग सब कुछ फ़ोन पर ही हटा दिया जाता है।</string>
+    <string name="onb_reads_2">केवल संदिग्ध संदेशों के नंबर, UPI हैंडल, खाते और लिंक JAAL सर्वर से जाँचे जाते हैं।</string>
+    <string name="onb_reads_3">वैकल्पिक: अनजान नंबर से आने वाली कॉल का नंबर। कॉल कभी ब्लॉक नहीं होती।</string>
+    <string name="onb_never_title">JAAL क्या कभी नहीं पढ़ता</string>
+    <string name="onb_never_1">आपके संपर्क, आपकी स्क्रीन या पुराने संदेश। JAAL Accessibility Service का उपयोग नहीं करता।</string>
+    <string name="onb_never_2">आपके भुगतान की आदतें। ये केवल इसी फ़ोन पर रहती हैं।</string>
+    <string name="grant_notif">सूचना एक्सेस दें</string>
+    <string name="grant_overlay">दूसरे ऐप्स के ऊपर दिखाने दें</string>
+    <string name="grant_call">कॉल स्क्रीनिंग के लिए JAAL (वैकल्पिक)</string>
+    <string name="grant_post">JAAL सूचनाएँ चालू करें</string>
+    <string name="granted">दिया गया</string>
+    <string name="onb_continue">आगे बढ़ें</string>
+
+    <string name="status_on">सूचनाओं पर नज़र है</string>
+    <string name="status_off">सूचना एक्सेस बंद है</string>
+    <string name="manual_title">कुछ जाँचें</string>
+    <string name="manual_hint">संदेश, नंबर, UPI हैंडल या लिंक पेस्ट करें</string>
+    <string name="check">जाँचें</string>
+    <string name="check_clipboard">क्लिपबोर्ड जाँचें</string>
+    <string name="recent_title">हाल की जाँच</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="guardian">संरक्षक</string>
+    <string name="checking">जाँच हो रही है…</string>
+
+    <string name="state_reported">रिपोर्ट हुआ</string>
+    <string name="state_confirmed">पुष्ट गिरोह</string>
+    <string name="state_clear">कोई रिपोर्ट नहीं</string>
+    <string name="clear_headline">अभी तक कोई रिपोर्ट नहीं</string>
+
+    <string name="action_details">गिरोह देखें</string>
+    <string name="action_dismiss">हटाएँ</string>
+    <string name="action_chakshu">चक्षु पर रिपोर्ट करें</string>
+    <string name="action_call_1930">1930 पर कॉल करें</string>
+    <string name="action_share_family">परिवार को भेजें</string>
+    <string name="action_dispute">यह मेरा है: आपत्ति</string>
+    <string name="action_mark_safe">मैं इसे जानता/जानती हूँ</string>
+    <string name="close">बंद करें</string>
+
+    <string name="settings_language">भाषा</string>
+    <string name="save">सहेजें</string>
+    <string name="guardian_title">संरक्षक मोड</string>
+    <string name="guardian_generate">पेयरिंग कोड बनाएँ</string>
+    <string name="guardian_link">संरक्षक के रूप में जोड़ें</string>
+    <string name="guardian_alert_title">आपके संरक्षित फ़ोन पर पुष्ट गिरोह</string>
+    <string name="guardian_call">कॉल करें</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Indic scripts: line-height 1.6 x size (tokens.css lh-indic). -->
+<resources>
+    <dimen name="lh_display">45sp</dimen>
+    <dimen name="lh_verdict">35sp</dimen>
+    <dimen name="lh_body">24sp</dimen>
+    <dimen name="lh_caption">21sp</dimen>
+    <dimen name="lh_micro">18sp</dimen>
+</resources>
