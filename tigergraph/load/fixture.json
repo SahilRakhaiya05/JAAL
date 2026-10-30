@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "note": "Graph-lane fixture in the snapshot contract shape (README 'Snapshot contract'). Two synthetic rings plus noise. All identifiers are invented.",
+  "exportedAt": "2026-10-30T06:00:00Z",
+  "reporters": [
+    { "id": "reporter:a1f0", "trust": 0.8, "cluster": "c-blr-1" },
+    { "id": "reporter:b2e1", "trust": 0.6, "cluster": "c-pune-4" },
+    { "id": "reporter:c3d2", "trust": 0.7, "cluster": "c-ahd-2" },
+    { "id": "reporter:d4c3", "trust": 0.5, "cluster": "c-del-9" },
+    { "id": "reporter:e5b4", "trust": 0.9, "cluster": "c-blr-1" }
+  ],
+  "texts": [
+    { "id": "text:da01", "lang": "en", "text": "This is CBI officer. A parcel in your name has drugs. You are under digital arrest. Transfer security deposit to refund.desk@ybl immediately." },
+    { "id": "text:da02", "lang": "en", "text": "CBI officer speaking, parcel with drugs in your name, digital arrest, transfer the security deposit to verify.cell@okaxis now." },
+    { "id": "text:eb01", "lang": "en", "text": "Dear customer your electricity connection will be disconnected tonight. Update bill details: install mseb-bill-update.apk from bijli-update.in" }
+  ],
+  "nodes": [
+    { "id": "pattern:digital_arrest", "value": "digital_arrest", "kind": "script" },
+    { "id": "pattern:electricity_bill", "value": "electricity_bill", "kind": "script" },
+    { "id": "domain:sbi.co.in", "state": "clear", "source": "allowlist" },
+    { "id": "domain:bijli-update.in", "source": "feed:demo" }
+  ],
+  "reports": [
+    { "id": "report:r01", "ts": "2026-10-03T09:10:00Z", "reporter": "reporter:a1f0", "city": "Bengaluru", "source": "extension", "surface": "whatsapp_web", "verdict": "scam",
+      "identifiers": ["phone:+919812300001", "upi:refund.desk@ybl", "pattern:digital_arrest"], "textKey": "text:da01" },
+    { "id": "report:r02", "ts": "2026-10-06T11:40:00Z", "reporter": "reporter:b2e1", "city": "Pune", "source": "android", "surface": "call", "verdict": "scam",
+      "identifiers": ["phone:+919812300002", "upi:refund.desk@ybl", "bank_account:50100123456789", "pattern:digital_arrest"], "textKey": "text:da01" },
+    { "id": "report:r03", "ts": "2026-10-11T15:05:00Z", "reporter": "reporter:c3d2", "city": "Ahmedabad", "source": "web", "surface": "paste", "verdict": "scam",
+      "identifiers": ["phone:+919812300003", "upi:verify.cell@okaxis", "bank_account:50100123456789", "pattern:digital_arrest"], "textKey": "text:da02" },
+    { "id": "report:r04", "ts": "2026-10-19T08:30:00Z", "reporter": "reporter:d4c3", "city": "Delhi", "source": "extension", "surface": "telegram_web", "verdict": "scam",
+      "identifiers": ["phone:+919812300004", "upi:verify.cell@okaxis", "pattern:digital_arrest"], "textKey": "text:da02" },
+    { "id": "report:r05", "ts": "2026-10-26T19:55:00Z", "reporter": "reporter:e5b4", "city": "Bengaluru", "source": "android", "surface": "notification", "verdict": "scam",
+      "identifiers": ["phone:+919812300001", "bank_account:50100123456789"] },
+    { "id": "report:r06", "ts": "2026-10-14T07:00:00Z", "reporter": "reporter:b2e1", "city": "Nagpur", "source": "android", "surface": "notification", "verdict": "scam",
+      "identifiers": ["apk:mseb-bill-update.apk", "url:http://bijli-update.in/pay", "domain:bijli-update.in", "phone:+919800400001", "pattern:electricity_bill"], "textKey": "text:eb01" },
+    { "id": "report:r07", "ts": "2026-10-21T13:20:00Z", "reporter": "reporter:c3d2", "city": "Surat", "source": "web", "surface": "paste", "verdict": "scam",
+      "identifiers": ["apk:mseb-bill-update.apk", "domain:bijli-updates.in", "phone:+919800400002", "upi:mseb.pay@ibl", "pattern:electricity_bill"], "textKey": "text:eb01" },
+    { "id": "report:r08", "ts": "2026-10-28T10:45:00Z", "reporter": "reporter:a1f0", "city": "Nashik", "source": "extension", "surface": "gmail", "verdict": "scam",
+      "identifiers": ["phone:+919800400002", "upi:mseb.pay@ibl", "pattern:electricity_bill"] },
+    { "id": "report:r09", "ts": "2026-10-29T12:00:00Z", "reporter": "reporter:d4c3", "city": "Kochi", "source": "web", "surface": "paste", "verdict": "scam",
+      "identifiers": ["phone:+919700000099"] }
+  ],
+  "edges": [
+    { "type": "PAYS_TO", "from": "phone:+919812300001", "to": "upi:refund.desk@ybl", "ts": "2026-10-03T09:10:00Z" },
+    { "type": "PAYS_TO", "from": "phone:+919812300002", "to": "upi:refund.desk@ybl", "ts": "2026-10-06T11:40:00Z" },
+    { "type": "PAYS_TO", "from": "upi:refund.desk@ybl", "to": "bank_account:50100123456789", "ts": "2026-10-06T11:40:00Z" },
+    { "type": "PAYS_TO", "from": "phone:+919812300003", "to": "upi:verify.cell@okaxis", "ts": "2026-10-11T15:05:00Z" },
+    { "type": "PAYS_TO", "from": "upi:verify.cell@okaxis", "to": "bank_account:50100123456789", "ts": "2026-10-11T15:05:00Z" },
+    { "type": "PAYS_TO", "from": "phone:+919812300004", "to": "upi:verify.cell@okaxis", "ts": "2026-10-19T08:30:00Z" },
+    { "type": "PAYS_TO", "from": "phone:+919800400002", "to": "upi:mseb.pay@ibl", "ts": "2026-10-21T13:20:00Z" },
+    { "type": "RESOLVES_TO", "from": "url:http://bijli-update.in/pay", "to": "domain:bijli-update.in", "ts": "2026-10-14T07:00:00Z" },
+    { "type": "HOSTED_ON", "from": "apk:mseb-bill-update.apk", "to": "domain:bijli-update.in", "ts": "2026-10-14T07:00:00Z" },
+    { "type": "SIMILAR_SCRIPT", "from": "text:da01", "to": "text:da02", "ts": "2026-10-11T15:05:00Z", "weight": 0.91 }
+  ],
+  "campaigns": [
+    { "id": "ring:upi:refund.desk@ybl", "name": "Digital arrest / refund desk", "pattern": "digital_arrest", "state": "confirmed",
+      "report_count": 5, "firstSeen": "2026-10-03T09:10:00Z", "lastSeen": "2026-10-26T19:55:00Z",
+      "members": ["phone:+919812300001", "phone:+919812300002", "phone:+919812300003", "phone:+919812300004", "upi:refund.desk@ybl",
+                  "upi:verify.cell@okaxis", "bank_account:50100123456789", "text:da01", "text:da02",
+                  "report:r01", "report:r02", "report:r03", "report:r04", "report:r05"] },
+    { "id": "ring:apk:mseb-bill-update.apk", "name": "Electricity bill APK", "pattern": "electricity_bill", "state": "reported",
+      "report_count": 3, "firstSeen": "2026-10-14T07:00:00Z", "lastSeen": "2026-10-28T10:45:00Z",
+      "members": ["apk:mseb-bill-update.apk", "url:http://bijli-update.in/pay", "domain:bijli-update.in", "domain:bijli-updates.in",
+                  "phone:+919800400001", "phone:+919800400002", "upi:mseb.pay@ibl", "text:eb01", "report:r06", "report:r07", "report:r08"] }
+  ]
+}
