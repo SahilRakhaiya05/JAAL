@@ -1,0 +1,22 @@
+{
+  "name": "@jaal/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Public, read-only JAAL MCP server: check identifiers against the shared scam-ring graph",
+  "type": "module",
+  "bin": {
+    "jaal-mcp": "./server.mjs"
+  },
+  "scripts": {
+    "start": "node server.mjs --http",
+    "stdio": "node server.mjs",
+    "test": "node test-client.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  }
+}
