@@ -1,0 +1,204 @@
+/*
+ * JAAL fraud graph: schema for TigerGraph 4.x (Savanna or self-hosted).
+ *
+ * Run from GSQL shell / GraphStudio "Write Queries" / `gsql schema.gsql`:
+ *     gsql -g JAAL schema.gsql      (or paste into the Savanna GSQL editor)
+ *
+ * Design rules
+ * ------------
+ * 1. Every vertex primary id is the canonical key from shared/extract.js:
+ *    "type:value", e.g. "upi:refund.desk@ybl", "phone:+919876543210",
+ *    "domain:sbi-kyc-update.in", "report:<uuid>", "reporter:<salted hash>".
+ *    primary_id_as_attribute lets queries read it as v.id.
+ * 2. Every vertex type carries the same common attribute block
+ *    (value, state, report_count, first_seen, last_seen, source, trust, city,
+ *    wcc_id, community_id) so heterogeneous traversals can read v.state /
+ *    v.report_count on an untyped alias without per-type branching.
+ *    wcc_id / community_id are INT result attributes written by the GDS
+ *    library queries tg_wcc / tg_louvain (see setup.md).
+ * 3. Every edge carries ts DATETIME (when the link was observed), weight FLOAT
+ *    (evidence weight, 1.0 for a deterministic link, cosine for SIMILAR_SCRIPT)
+ *    and decayed FLOAT (weight * 0.5^(age_days/21), materialised by the
+ *    refresh_decay query before Louvain runs; online queries compute decay
+ *    in-query from ts and never trust the materialised value).
+ * 4. Edges that community detection walks (MENTIONS, RESOLVES_TO, HOSTED_ON,
+ *    SAME_TEXT_AS, SIMILAR_SCRIPT) are UNDIRECTED, because tg_wcc / tg_louvain
+ *    traverse e_type_set without direction. Edges whose direction carries
+ *    meaning (REPORTED, PAYS_TO, NEXT, IN_CAMPAIGN) are DIRECTED WITH
+ *    REVERSE_EDGE so queries can walk them both ways; community detection is
+ *    given PAYS_TO and reverse_PAYS_TO together, which reads as undirected.
+ *    MATCHES_PATTERN (Report -> ScamPattern) is a separate edge type so that
+ *    shared pattern vertices never enter Louvain (it follows e_type_set to
+ *    targets of ANY vertex type).
+ *    REPORTED is deliberately NOT in the community edge set: one prolific (or
+ *    malicious) reporter must not be able to glue unrelated identifiers into
+ *    one ring. That is the first poisoning defence.
+ *
+ * Identifier type -> vertex type (same table lives in queries/jaal_vtype.gsql
+ * and load/common.mjs):
+ *    phone -> Phone, upi -> UpiHandle, bank_account -> BankAccount,
+ *    url -> Url, domain -> Domain, apk -> ApkHash, crypto -> CryptoAddress,
+ *    text -> MessageText, pattern / remote_app / ifsc -> ScamPattern,
+ *    report -> Report, reporter -> Reporter, campaign / ring -> Campaign.
+ */
+
+// ---------------------------------------------------------------- vertices
+// Evidence
+CREATE VERTEX Report (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "pending", report_count INT DEFAULT 1,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0.5, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    ts DATETIME, surface STRING, verdict STRING DEFAULT "scam", lang STRING DEFAULT "en")
+  WITH primary_id_as_attribute="true"
+
+CREATE VERTEX Reporter (PRIMARY_ID id STRING,              // salted device hash, never a person
+    value STRING, state STRING DEFAULT "active", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0.5, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    cluster STRING)                                          // independence cluster for corroboration
+  WITH primary_id_as_attribute="true"
+
+// Identifiers (scammer-side only; no victim data)
+CREATE VERTEX Phone (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "clear", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    country STRING)
+  WITH primary_id_as_attribute="true"
+
+CREATE VERTEX UpiHandle (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "clear", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    psp STRING)
+  WITH primary_id_as_attribute="true"
+
+CREATE VERTEX BankAccount (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "clear", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    ifsc STRING)
+  WITH primary_id_as_attribute="true"
+
+CREATE VERTEX Url (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "clear", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    shortener BOOL)                                          // BOOL defaults to false
+  WITH primary_id_as_attribute="true"
+
+CREATE VERTEX Domain (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "clear", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    brand_target STRING)                                     // e.g. "sbi" when a feed tags it
+  WITH primary_id_as_attribute="true"
+
+CREATE VERTEX ApkHash (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "clear", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    sha256 STRING)
+  WITH primary_id_as_attribute="true"
+
+CREATE VERTEX CryptoAddress (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "clear", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    chain STRING)                                            // btc | eth | xmr | trx
+  WITH primary_id_as_attribute="true"
+
+// Script text after on-device redaction. The 256-d embedding is added below by
+// a schema change job (vector attributes cannot be declared in CREATE VERTEX).
+CREATE VERTEX MessageText (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "clear", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    lang STRING DEFAULT "en")
+  WITH primary_id_as_attribute="true"
+
+// Script family / triage signal ("pattern:digital_arrest", "remote_app:anydesk").
+CREATE VERTEX ScamPattern (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "clear", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    kind STRING)
+  WITH primary_id_as_attribute="true"
+
+// A ring. Written by materialize_campaigns (or by the server lane).
+CREATE VERTEX Campaign (PRIMARY_ID id STRING,
+    value STRING, state STRING DEFAULT "reported", report_count INT DEFAULT 0,
+    first_seen DATETIME, last_seen DATETIME, source STRING, trust FLOAT DEFAULT 0, city STRING,
+    wcc_id INT DEFAULT -1, community_id INT DEFAULT -1,
+    name STRING, pattern STRING, size INT DEFAULT 0, cluster_count INT DEFAULT 0, anchor STRING)
+  WITH primary_id_as_attribute="true"
+
+// ------------------------------------------------------------------- edges
+CREATE DIRECTED EDGE REPORTED (FROM Reporter, TO Report,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0)
+  WITH REVERSE_EDGE="reverse_REPORTED"
+
+CREATE UNDIRECTED EDGE MENTIONS (
+    FROM Report, TO Phone | FROM Report, TO UpiHandle | FROM Report, TO BankAccount |
+    FROM Report, TO Url | FROM Report, TO Domain | FROM Report, TO ApkHash |
+    FROM Report, TO CryptoAddress,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0)
+
+// Report matched a script family / triage signal. Kept OUT of MENTIONS on
+// purpose: tg_louvain walks e_type_set to targets of any type, and a shared
+// "digital_arrest" pattern vertex would otherwise glue every ring together.
+CREATE UNDIRECTED EDGE MATCHES_PATTERN (FROM Report, TO ScamPattern,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0)
+
+// "This phone told victims to pay this handle / account / wallet."
+CREATE DIRECTED EDGE PAYS_TO (
+    FROM Phone, TO UpiHandle | FROM Phone, TO BankAccount | FROM Phone, TO CryptoAddress |
+    FROM UpiHandle, TO UpiHandle | FROM UpiHandle, TO BankAccount | FROM UpiHandle, TO CryptoAddress,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0)
+  WITH REVERSE_EDGE="reverse_PAYS_TO"
+
+CREATE UNDIRECTED EDGE RESOLVES_TO (FROM Url, TO Domain,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0)
+
+CREATE UNDIRECTED EDGE HOSTED_ON (FROM ApkHash, TO Url | FROM ApkHash, TO Domain,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0)
+
+// Report body normalises to exactly this redacted text (deterministic link).
+CREATE UNDIRECTED EDGE SAME_TEXT_AS (FROM Report, TO MessageText,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0)
+
+// Two scripts are near-duplicates (cosine on the 256-d embedding). weight = cosine.
+CREATE UNDIRECTED EDGE SIMILAR_SCRIPT (FROM MessageText, TO MessageText,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0)
+
+// Temporal successor inside one campaign: report -> next report of the same ring.
+CREATE DIRECTED EDGE NEXT (FROM Report, TO Report,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0, gap_hours FLOAT DEFAULT 0)
+  WITH REVERSE_EDGE="reverse_NEXT"
+
+CREATE DIRECTED EDGE IN_CAMPAIGN (
+    FROM Report, TO Campaign | FROM MessageText, TO Campaign |
+    FROM Phone, TO Campaign | FROM UpiHandle, TO Campaign | FROM BankAccount, TO Campaign |
+    FROM Url, TO Campaign | FROM Domain, TO Campaign | FROM ApkHash, TO Campaign |
+    FROM CryptoAddress, TO Campaign,
+    ts DATETIME, weight FLOAT DEFAULT 1.0, decayed FLOAT DEFAULT 1.0)
+  WITH REVERSE_EDGE="reverse_IN_CAMPAIGN"
+
+// ------------------------------------------------------------------- graph
+CREATE GRAPH JAAL (Report, Reporter, Phone, UpiHandle, BankAccount, Url, Domain, ApkHash,
+    CryptoAddress, MessageText, ScamPattern, Campaign,
+    REPORTED, MENTIONS, MATCHES_PATTERN, PAYS_TO, RESOLVES_TO, HOSTED_ON, SAME_TEXT_AS, SIMILAR_SCRIPT,
+    NEXT, IN_CAMPAIGN)
+
+// ------------------------------------------------------- TigerVector (4.2+)
+// VERSION-DEPENDENT: vector attributes need TigerGraph 4.2 or later (Savanna
+// workspaces on 4.2+). On 4.1 skip this job; everything except
+// script_similarity still installs.
+// DIMENSION=256 matches the server lane's hashed bag-of-n-grams embedding
+// (server/ memory engine): if the server changes its dimension, change it here
+// too, or vectorSearch() will reject the query vector.
+// The vertex types are global, so this is a GLOBAL schema change job.
+CREATE GLOBAL SCHEMA_CHANGE JOB jaal_add_vectors {
+  ALTER VERTEX MessageText ADD VECTOR ATTRIBUTE embedding(DIMENSION=256, METRIC="COSINE");
+}
+RUN GLOBAL SCHEMA_CHANGE JOB jaal_add_vectors

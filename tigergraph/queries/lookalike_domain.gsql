@@ -1,0 +1,86 @@
+USE GRAPH JAAL
+
+/*
+ * lookalike_domain(domain, threshold)
+ * -----------------------------------
+ * "sbi-kyc-update.in" has never been reported, but it shares most of its
+ * character 3-grams with "sbi-kyc-updates.in", which is in a confirmed ring.
+ *
+ * Jaccard similarity on character 3-shingles, done entirely in GSQL with the
+ * built-in string functions (lower, trim, instr, substr, length):
+ *     J(A, B) = |A n B| / (|A| + |B| - |A n B|)
+ * The query's shingles go into a global SetAccum<STRING>; every Domain vertex
+ * shingles its own value in POST-ACCUM (FOREACH over RANGE) into a
+ * vertex-attached SetAccum and keeps the subset that hits the query set.
+ *
+ * Honest cost note: this is a scan over all Domain vertices, O(|Domain| * L)
+ * with L ~ 20 characters. That is fine for the demo and for 10^5-10^6
+ * domains on one Savanna node (it is embarrassingly parallel per vertex).
+ * The graph-native upgrade is a Shingle vertex type with HAS_SHINGLE edges
+ * written at upsert time; the query then becomes a 2-hop traversal
+ * (Domain -> Shingle -> Domain) that only touches domains sharing a gram.
+ * The server's memory engine uses the same formula, so both backends agree.
+ *
+ * Accepts "domain:example.in" or "example.in".
+ */
+CREATE OR REPLACE QUERY lookalike_domain(STRING domain, FLOAT threshold = 0.4, INT k = 20) FOR GRAPH JAAL SYNTAX V1 {
+
+  TYPEDEF TUPLE<STRING id, STRING label, FLOAT jaccard, INT shared, INT reports, STRING state> Look;
+
+  SetAccum<STRING>  @@q;            // shingles of the query domain
+  SetAccum<STRING>  @sh;            // shingles of each candidate
+  SetAccum<STRING>  @hit;           // candidate shingles also in @@q
+  SumAccum<FLOAT>   @jac;
+  SumAccum<INT>     @@scanned;
+  HeapAccum<Look>(k, jaccard DESC, reports DESC, id ASC) @@top;
+  ListAccum<Look>   @@matches;
+
+  STRING d;
+  INT    i = 0;
+  INT    n;
+
+  d = lower(trim(domain));
+  IF instr(d, "domain:") == 0 THEN
+    d = substr(d, 7);
+  END;
+  n = length(d);
+
+  WHILE i <= n - 3 DO
+    @@q += substr(d, i, 3);
+    i = i + 1;
+  END;
+
+  Domains = {Domain.*};
+
+  // pass 1: shingle every candidate, remember which grams hit the query set
+  Domains =
+    SELECT x FROM Domains:x
+    WHERE x.value != d AND length(x.value) >= 3
+    POST-ACCUM
+      @@scanned += 1,
+      FOREACH j IN RANGE[0, length(x.value) - 3] DO
+        x.@sh += substr(x.value, j, 3),
+        IF @@q.contains(substr(x.value, j, 3)) THEN
+          x.@hit += substr(x.value, j, 3)
+        END
+      END;
+
+  // pass 2: Jaccard on the finished sets (accumulator writes from pass 1 are now visible)
+  Domains =
+    SELECT x FROM Domains:x
+    WHERE x.@hit.size() > 0
+    POST-ACCUM
+      x.@jac = x.@hit.size() * 1.0 / (@@q.size() + x.@sh.size() - x.@hit.size())
+    HAVING x.@jac >= threshold;
+
+  Domains =
+    SELECT x FROM Domains:x
+    POST-ACCUM @@top += Look(x.id, x.value, x.@jac, x.@hit.size(), x.report_count, x.state);
+
+  WHILE @@top.size() > 0 DO
+    @@matches += @@top.top();
+    @@top.pop();
+  END;
+
+  PRINT d AS query, @@q.size() AS shingles, @@scanned AS scanned, @@matches AS matches;
+}

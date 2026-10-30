@@ -1,0 +1,39 @@
+/*
+ * install_all.gsql: create + install everything for graph JAAL.
+ *
+ * Run from tigergraph/ in the GSQL shell (the @file include is a GSQL shell
+ * feature; in the Savanna GSQL editor paste the files in this order instead):
+ *     gsql install_all.gsql
+ *
+ * Prerequisites:
+ *   1. schema.gsql has been run (graph JAAL exists, vector job applied on 4.2+)
+ *   2. GDS queries fetched:  node load/fetch-gds.mjs   (writes gds/tg_wcc.gsql,
+ *      gds/tg_louvain.gsql from github.com/tigergraph/gsql-graph-algorithms)
+ *
+ * On TigerGraph 4.1 (no TigerVector) remove the script_similarity line; the
+ * other queries do not depend on vector attributes.
+ */
+USE GRAPH JAAL
+
+// subquery first: the online queries call it
+@queries/jaal_vtype.gsql
+
+// the six online queries the server adapter calls
+@queries/blast_radius.gsql
+@queries/ring_of.gsql
+@queries/money_chokepoint.gsql
+@queries/lookalike_domain.gsql
+@queries/script_similarity.gsql
+@queries/spread_map.gsql
+
+// batch ring detection (refresh_decay -> tg_wcc -> tg_louvain -> materialize_campaigns -> link_next)
+@queries/refresh_decay.gsql
+@queries/materialize_campaigns.gsql
+@gds/tg_wcc.gsql
+@gds/tg_louvain.gsql
+
+// loading job for the TSV export
+@loading_job.gsql
+
+USE GRAPH JAAL
+INSTALL QUERY ALL

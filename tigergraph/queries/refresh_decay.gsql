@@ -1,0 +1,43 @@
+USE GRAPH JAAL
+
+/*
+ * refresh_decay(window_days)
+ * --------------------------
+ * Batch step 1 of ring detection. Materialises e.decayed on every edge type
+ * that tg_louvain will read:
+ *     decayed = weight * 0.5 ^ (age_days / 21)     inside the window
+ *     decayed = 1e-6                               outside (keeps Louvain's
+ *                                                   total weight m > 0)
+ * Online queries never read e.decayed; they recompute decay from e.ts.
+ *
+ * PAYS_TO and reverse_PAYS_TO are both written because tg_louvain walks both
+ * (that is how a DIRECTED edge is presented to an undirected algorithm) and
+ * each direction is a separate edge instance with its own attributes.
+ */
+CREATE OR REPLACE QUERY refresh_decay(INT window_days = 90) FOR GRAPH JAAL SYNTAX V1 {
+  SumAccum<INT> @@edges_seen;
+  SumAccum<INT> @@edges_live;
+
+  FLOAT HALF_LIFE_DAYS = 21.0;
+  FLOAT FLOOR_W = 0.000001;
+  INT   now_epoch;
+  INT   cutoff_epoch;
+  now_epoch    = datetime_to_epoch(now());
+  cutoff_epoch = now_epoch - window_days * 86400;
+
+  Src = {Report.*, Phone.*, UpiHandle.*, BankAccount.*, Url.*, ApkHash.*, CryptoAddress.*, MessageText.*};
+
+  Src = SELECT s
+        FROM Src:s -((MENTIONS|PAYS_TO|reverse_PAYS_TO|RESOLVES_TO|HOSTED_ON|SAME_TEXT_AS|SIMILAR_SCRIPT):e)-> :t
+        ACCUM
+          @@edges_seen += 1,
+          IF datetime_to_epoch(e.ts) >= cutoff_epoch THEN
+            e.decayed = e.weight * pow(0.5, (now_epoch - datetime_to_epoch(e.ts)) / (86400.0 * HALF_LIFE_DAYS)),
+            @@edges_live += 1
+          ELSE
+            e.decayed = FLOOR_W
+          END;
+
+  // undirected edges are visited once from each endpoint, so halve the counts
+  PRINT @@edges_seen AS edge_visits, @@edges_live AS live_visits, window_days;
+}

@@ -1,0 +1,71 @@
+USE GRAPH JAAL
+
+/*
+ * spread_map(campaign_id)
+ * -----------------------
+ * How a ring moved across India: per-city first sighting + report counts,
+ * and the NEXT chain (report -> next report of the same ring, ordered by
+ * time) as city-to-city hops with the gap between them.
+ *
+ * The NEXT edges are written at ingest (server lane) or by
+ * materialize_campaigns' caller; this query only reads them, restricted to
+ * reports that are members of the campaign and inside the time window.
+ *
+ * cities: ordered by first_seen ascending (the order the ring reached them)
+ * hops  : ordered by ts ascending, capped at max_hops
+ */
+CREATE OR REPLACE QUERY spread_map(STRING campaign_id, INT window_days = 365, INT max_hops = 200)
+  FOR GRAPH JAAL SYNTAX V1 {
+
+  TYPEDEF TUPLE<STRING city, DATETIME first_seen, INT reports> CityRow;   // "count" is a GSQL keyword
+  TYPEDEF TUPLE<STRING from_city, STRING to_city, DATETIME ts, FLOAT gap_hours> HopRow;
+
+  OrAccum                                @in_camp;
+  SetAccum<STRING>                       @@ids;
+  MapAccum<STRING, SumAccum<INT>>        @@city_count;
+  MapAccum<STRING, MinAccum<DATETIME>>   @@first;
+  HeapAccum<CityRow>(500, first_seen ASC, reports DESC) @@city_heap;
+  HeapAccum<HopRow>(max_hops, ts ASC) @@hop_heap;
+  ListAccum<CityRow>                     @@cities;
+  ListAccum<HopRow>                      @@hops;
+  SumAccum<INT>                          @@reports;
+
+  INT  cutoff_epoch;
+  BOOL found = FALSE;
+  cutoff_epoch = datetime_to_epoch(now()) - window_days * 86400;
+
+  @@ids += campaign_id;
+  Camp = to_vertex_set(@@ids, "Campaign");
+  found = Camp.size() > 0;
+
+  // reports of this ring inside the window, grouped by city
+  Reps = SELECT r FROM Camp:c -(reverse_IN_CAMPAIGN:e)-> Report:r
+         WHERE datetime_to_epoch(r.ts) >= cutoff_epoch
+         POST-ACCUM
+           r.@in_camp = TRUE,
+           @@reports += 1,
+           IF r.city != "" THEN
+             @@city_count += (r.city -> 1),
+             @@first += (r.city -> r.ts)
+           END;
+
+  FOREACH (city, cnt) IN @@city_count DO
+    @@city_heap += CityRow(city, @@first.get(city), cnt);
+  END;
+
+  // the temporal chain, city to city
+  Moves = SELECT t FROM Reps:s -(NEXT:e)-> Report:t
+          WHERE t.@in_camp
+          ACCUM @@hop_heap += HopRow(s.city, t.city, e.ts, e.gap_hours);
+
+  WHILE @@city_heap.size() > 0 DO
+    @@cities += @@city_heap.top();
+    @@city_heap.pop();
+  END;
+  WHILE @@hop_heap.size() > 0 DO
+    @@hops += @@hop_heap.top();
+    @@hop_heap.pop();
+  END;
+
+  PRINT found, campaign_id, @@reports AS reports, @@cities AS cities, @@hops AS hops;
+}

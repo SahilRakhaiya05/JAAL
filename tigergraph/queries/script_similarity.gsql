@@ -1,0 +1,100 @@
+USE GRAPH JAAL
+
+/*
+ * script_similarity(text_key, k)       and       script_similarity_vec(query_vector, k)
+ * --------------------------------------------------------------------------------------
+ * Hybrid graph + vector search (TigerVector): "this message reads like the
+ * digital-arrest script of a confirmed ring", even when every identifier in
+ * it is brand new.
+ *
+ *   1. Graph filter  : candidate set = MessageText vertices that are members
+ *                      of a confirmed Campaign (IN_CAMPAIGN -> Campaign with
+ *                      state == "confirmed"). Set confirmed_only=false to
+ *                      search every campaign script.
+ *   2. Vector search : vectorSearch() over MessageText.embedding (HNSW,
+ *                      COSINE, dim 256) restricted to that candidate_set,
+ *                      distances collected in a MapAccum via distance_map.
+ *
+ * VERSION-DEPENDENT: needs TigerGraph 4.2+ (vector attributes, vectorSearch).
+ * Written in SYNTAX v3, as in the TigerGraph vector docs and tutorials.
+ *
+ * Distance: for METRIC="COSINE" TigerVector reports cosine DISTANCE, so
+ * similarity = 1 - distance is printed alongside. (Verify the convention on
+ * your exact build; the docs describe the map as "distance".)
+ *
+ * script_similarity(text_key) reads the stored embedding of a MessageText
+ * already in the graph. Reading a vector attribute inside POST-ACCUM is the
+ * documented way to touch it (vector attributes are not allowed in WHERE).
+ * script_similarity_vec(query_vector) takes the server's 256-d hashed
+ * embedding directly, for a message that is not in the graph yet; that is
+ * the one /api/check should call for fresh text.
+ */
+CREATE OR REPLACE QUERY script_similarity(STRING text_key, INT k = 10, BOOL confirmed_only = TRUE)
+  FOR GRAPH JAAL SYNTAX v3 {
+
+  TYPEDEF TUPLE<STRING id, STRING label, FLOAT distance, FLOAT similarity, INT reports,
+                STRING state, STRING campaign> Match;
+
+  ListAccum<FLOAT>          @@qv;
+  SetAccum<STRING>          @@ids;
+  MapAccum<VERTEX, FLOAT>   @@dist;
+  MaxAccum<STRING>          @campaign;
+  HeapAccum<Match>(k, distance ASC, id ASC) @@heap;
+  ListAccum<Match>          @@matches;
+  BOOL found = FALSE;
+
+  @@ids += text_key;
+  Seed = to_vertex_set(@@ids, "MessageText");
+  Seed = SELECT s FROM (s:Seed)
+         POST-ACCUM FOREACH x IN s.embedding DO @@qv += x END;
+  found = Seed.size() > 0;
+
+  // graph filter: scripts that belong to (confirmed) campaigns, minus the query itself
+  Cand = SELECT m FROM (m:MessageText)-[e:IN_CAMPAIGN]->(c:Campaign)
+         WHERE (NOT confirmed_only OR c.state == "confirmed") AND m.id != text_key
+         ACCUM m.@campaign += c.id;
+
+  IF Cand.size() > 0 AND @@qv.size() > 0 THEN
+    Res = vectorSearch({MessageText.embedding}, @@qv, k, {candidate_set: Cand, distance_map: @@dist});
+    Res = SELECT r FROM (r:Res)
+          POST-ACCUM @@heap += Match(r.id, r.value, @@dist.get(r), 1.0 - @@dist.get(r),
+                                     r.report_count, r.state, r.@campaign);
+  END;
+
+  WHILE @@heap.size() > 0 DO
+    @@matches += @@heap.top();
+    @@heap.pop();
+  END;
+
+  PRINT found, text_key AS query, Cand.size() AS candidates, @@matches AS matches;
+}
+
+CREATE OR REPLACE QUERY script_similarity_vec(LIST<FLOAT> query_vector, INT k = 10, BOOL confirmed_only = TRUE)
+  FOR GRAPH JAAL SYNTAX v3 {
+
+  TYPEDEF TUPLE<STRING id, STRING label, FLOAT distance, FLOAT similarity, INT reports,
+                STRING state, STRING campaign> Match;
+
+  MapAccum<VERTEX, FLOAT>   @@dist;
+  MaxAccum<STRING>          @campaign;
+  HeapAccum<Match>(k, distance ASC, id ASC) @@heap;
+  ListAccum<Match>          @@matches;
+
+  Cand = SELECT m FROM (m:MessageText)-[e:IN_CAMPAIGN]->(c:Campaign)
+         WHERE NOT confirmed_only OR c.state == "confirmed"
+         ACCUM m.@campaign += c.id;
+
+  IF Cand.size() > 0 AND query_vector.size() > 0 THEN
+    Res = vectorSearch({MessageText.embedding}, query_vector, k, {candidate_set: Cand, distance_map: @@dist});
+    Res = SELECT r FROM (r:Res)
+          POST-ACCUM @@heap += Match(r.id, r.value, @@dist.get(r), 1.0 - @@dist.get(r),
+                                     r.report_count, r.state, r.@campaign);
+  END;
+
+  WHILE @@heap.size() > 0 DO
+    @@matches += @@heap.top();
+    @@heap.pop();
+  END;
+
+  PRINT Cand.size() AS candidates, @@matches AS matches;
+}

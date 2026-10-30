@@ -1,0 +1,145 @@
+USE GRAPH JAAL
+
+/*
+ * ring_of(id_key)
+ * ---------------
+ * Return the ring an identifier belongs to, already pruned for drawing
+ * (<= max_nodes nodes, hop 0/1/2 from the centre), plus its Campaign.
+ *
+ * Community detection is NOT recomputed per request. It runs as a batch
+ * (setup.md step 7 / load/refresh-rings.mjs):
+ *     refresh_decay          -> materialise decayed edge weights (21-day half-life)
+ *     tg_wcc                 -> wcc_id on deterministic edges (hard-linked entities)
+ *     tg_louvain             -> community_id on the decay-weighted edges
+ *     materialize_campaigns  -> Campaign vertices + IN_CAMPAIGN membership,
+ *                               only for communities that pass corroboration
+ * This query only reads that membership, so it is a few-hop lookup.
+ *
+ * id_key may be an identifier key ("upi:refund.desk@ybl") or a Campaign id
+ * (anything without a known type prefix). For a campaign id the centre is the
+ * member identifier with the most reports.
+ *
+ * Ring hops are identifier hops: identifier -> Report -> identifier is one hop
+ * and is projected as an edge of type "CO_REPORTED"; PAYS_TO, RESOLVES_TO,
+ * HOSTED_ON, SAME_TEXT_AS and SIMILAR_SCRIPT are one hop and keep their type.
+ * Report vertices are walked through but never returned as ring nodes.
+ */
+CREATE OR REPLACE QUERY ring_of(STRING id_key, INT max_nodes = 40) FOR GRAPH JAAL SYNTAX V1 {
+
+  TYPEDEF TUPLE<STRING id, STRING kind, STRING label, INT hop, INT reports, BOOL confirmed> RingNode;
+  TYPEDEF TUPLE<STRING src, STRING dst, STRING etype> RingEdge;
+  TYPEDEF TUPLE<INT reports, STRING id> Ranked;
+
+  OrAccum            @member;
+  OrAccum            @visited;
+  MinAccum<INT>      @hop;
+  SetAccum<STRING>   @via;          // on Report vertices: identifiers that reached it
+
+  SetAccum<STRING>   @@ids;
+  SetAccum<STRING>   @@center_ids;
+  HeapAccum<Ranked>(1, reports DESC, id ASC) @@best_campaign;
+  HeapAccum<Ranked>(1, reports DESC, id ASC) @@best_member;
+  HeapAccum<RingNode>(max_nodes, hop ASC, reports DESC, id ASC) @@nodes;
+  ListAccum<RingNode> @@node_list;
+  SetAccum<STRING>   @@keep;
+  SetAccum<RingEdge> @@candidate_edges;
+  SetAccum<RingEdge> @@edges;
+
+  STRING vtype;
+  STRING center = "";
+  STRING campaign_id = "";
+  BOOL   found = FALSE;
+  INT    step = 0;
+
+  vtype = jaal_vtype(id_key);
+  @@ids += id_key;
+  Seed = to_vertex_set(@@ids, vtype);
+
+  // ---- 1. resolve the campaign: either the seed is one, or the seed is in one
+  ViaEdge = SELECT c FROM Seed:s -(IN_CAMPAIGN:e)-> Campaign:c;
+  Direct  = SELECT s FROM Seed:s WHERE s.type == "Campaign";
+  Camp    = ViaEdge UNION Direct;
+  // an identifier can sit in more than one campaign: take the most reported
+  Camp = SELECT c FROM Camp:c ACCUM @@best_campaign += Ranked(c.report_count, c.id);
+  IF @@best_campaign.size() > 0 THEN
+    campaign_id = @@best_campaign.top().id;
+    found = TRUE;
+  END;
+  Camp = SELECT c FROM Camp:c WHERE c.id == campaign_id;
+
+  // ---- 2. mark members (identifiers, reports, texts)
+  Members = SELECT m FROM Camp:c -(reverse_IN_CAMPAIGN:e)-> :m
+            POST-ACCUM m.@member = TRUE;
+
+  // ---- 3. pick the centre: the seed if it is a member, else the top member
+  SeedMember = SELECT s FROM Seed:s WHERE s.@member;
+  Tmp = SELECT m FROM Members:m WHERE m.type != "Report"
+        ACCUM @@best_member += Ranked(m.report_count, m.id);
+  IF SeedMember.size() > 0 THEN
+    @@center_ids += id_key;
+  ELSE IF @@best_member.size() > 0 THEN
+    @@center_ids += @@best_member.top().id;
+  END;
+  Center = SELECT m FROM Members:m WHERE @@center_ids.contains(m.id)
+           POST-ACCUM m.@visited = TRUE, m.@hop = 0;
+  FOREACH x IN @@center_ids DO center = x; END;
+
+  // ---- 4. BFS inside the campaign: 4 edge hops = 2 identifier hops
+  Frontier = Center;
+  Ring = Center;
+  WHILE step < 4 AND Frontier.size() > 0 DO
+    Frontier =
+      SELECT t
+      FROM Frontier:s -((MENTIONS|PAYS_TO|reverse_PAYS_TO|RESOLVES_TO|HOSTED_ON|SAME_TEXT_AS|SIMILAR_SCRIPT):e)-> :t
+      WHERE t.@member
+      // ACCUM also runs for already-visited targets on purpose: that is how
+      // cross links between ring members become drawable edges.
+      ACCUM
+        IF t.type == "Report" THEN
+          t.@hop += s.@hop,
+          IF s.type != "Report" THEN t.@via += s.id END
+        ELSE
+          t.@hop += s.@hop + 1,
+          IF s.type == "Report" THEN
+            FOREACH p IN s.@via DO
+              IF p != t.id THEN @@candidate_edges += RingEdge(p, t.id, "CO_REPORTED") END
+            END
+          ELSE IF e.type == "reverse_PAYS_TO" THEN
+            @@candidate_edges += RingEdge(t.id, s.id, "PAYS_TO")    // keep money direction
+          ELSE
+            @@candidate_edges += RingEdge(s.id, t.id, e.type)
+          END
+        END
+      HAVING NOT t.@visited;
+    Frontier = SELECT t FROM Frontier:t POST-ACCUM t.@visited = TRUE;
+    Ring = Ring UNION Frontier;
+    step = step + 1;
+  END;
+
+  // ---- 5. prune to max_nodes: nearest first, then most reported
+  Ring = SELECT v FROM Ring:v
+         WHERE v.type != "Report" AND v.@hop <= 2
+         POST-ACCUM @@nodes += RingNode(v.id, substr(v.id, 0, instr(v.id, ":")), v.value,
+                                        v.@hop, v.report_count, v.state == "confirmed");
+
+  // drain the heap in rank order into a list (HeapAccum exposes top()/pop())
+  WHILE @@nodes.size() > 0 DO
+    @@node_list += @@nodes.top();
+    @@keep += @@nodes.top().id;
+    @@nodes.pop();
+  END;
+  FOREACH ed IN @@candidate_edges DO
+    // drop edges to pruned nodes and the mirror copy of an undirected pair
+    IF @@keep.contains(ed.src) AND @@keep.contains(ed.dst)
+       AND NOT @@edges.contains(RingEdge(ed.dst, ed.src, ed.etype)) THEN
+      @@edges += ed;
+    END;
+  END;
+
+  PRINT found,
+        center,
+        campaign_id,
+        Camp AS campaign,
+        @@node_list AS nodes,
+        @@edges AS edges;
+}

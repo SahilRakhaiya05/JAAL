@@ -1,0 +1,155 @@
+USE GRAPH JAAL
+
+/*
+ * materialize_campaigns(...)
+ * --------------------------
+ * Batch step 4 of ring detection, after tg_wcc and tg_louvain have written
+ * wcc_id and community_id. Turns Louvain communities into Campaign vertices,
+ * but only when the evidence is corroborated (the SPEC "confirmed" rule):
+ *
+ *   >= min_reports undisputed reports in the community, AND
+ *   reports come from >= min_clusters independent reporter clusters
+ *      (Reporter.cluster, a coarse device/network bucket set by the server), AND
+ *   sum of reporter trust >= min_trust, AND
+ *   >= min_size identifiers.
+ *
+ * That is the second poisoning defence: 50 reports from one reporter
+ * cluster never make a ring, and disputed reports do not count.
+ *
+ * Campaign ids are stable across re-runs: Louvain labels a community with
+ * the internal id of its centre vertex, so we look that vertex up and use
+ * its primary key: "ring:" + <centre key>, e.g. "ring:upi:refund.desk@ybl".
+ *
+ * Writes (upserts) Campaign vertices and IN_CAMPAIGN edges for identifiers,
+ * reports and texts of qualifying communities, and promotes their
+ * identifiers to state "confirmed" (unless disputed). Inserted vertices and
+ * edges become visible to later queries, not to this one, which is why NEXT
+ * chaining is a separate query (link_next).
+ */
+CREATE OR REPLACE QUERY materialize_campaigns(INT min_reports = 3, INT min_clusters = 2,
+                                              FLOAT min_trust = 1.0, INT min_size = 2,
+                                              BOOL promote = TRUE) FOR GRAPH JAAL SYNTAX V1 {
+
+  MapAccum<INT, SumAccum<INT>>                    @@reports;
+  MapAccum<INT, SetAccum<STRING>>                 @@clusters;
+  MapAccum<INT, SumAccum<FLOAT>>                  @@trust;
+  MapAccum<INT, SumAccum<INT>>                    @@size;
+  MapAccum<INT, MinAccum<DATETIME>>               @@first;
+  MapAccum<INT, MaxAccum<DATETIME>>               @@last;
+  MapAccum<INT, MapAccum<STRING, SumAccum<INT>>>  @@patterns;
+  MapAccum<INT, STRING>                           @@anchor;       // community -> centre key
+  MapAccum<INT, STRING>                           @@pattern_of;
+  SetAccum<INT>                                   @@qualified;
+  SumAccum<INT>                                   @@members_linked;
+
+  STRING best;
+  INT    best_n;
+
+  // ---- 1. corroboration evidence, from the reporter side
+  Reports = {Report.*};
+  Ev = SELECT r FROM Reports:r -(reverse_REPORTED:e)-> Reporter:p
+       WHERE r.community_id >= 0 AND r.state != "disputed" AND r.verdict != "safe"
+       ACCUM @@clusters += (r.community_id -> p.cluster),
+             @@trust    += (r.community_id -> p.trust)
+       POST-ACCUM @@reports += (r.community_id -> 1),
+                  @@first   += (r.community_id -> r.ts),
+                  @@last    += (r.community_id -> r.ts);
+
+  // ---- 2. dominant script family per community
+  Pat = SELECT sp FROM Reports:r -(MATCHES_PATTERN:e)-> ScamPattern:sp
+        WHERE r.community_id >= 0
+        ACCUM @@patterns += (r.community_id -> (sp.value -> 1));
+
+  // ---- 3. size, and the centre vertex Louvain named each community after
+  Ids = {Phone.*, UpiHandle.*, BankAccount.*, Url.*, Domain.*, ApkHash.*, CryptoAddress.*, MessageText.*};
+  Ids = SELECT v FROM Ids:v
+        WHERE v.community_id >= 0
+        POST-ACCUM
+          @@size += (v.community_id -> 1),
+          IF getvid(v) == v.community_id THEN @@anchor += (v.community_id -> v.id) END;
+  Rc  = SELECT r FROM Reports:r
+        WHERE r.community_id >= 0 AND getvid(r) == r.community_id
+        POST-ACCUM @@anchor += (r.community_id -> r.id);
+
+  // ---- 4. apply the corroboration rule
+  FOREACH (cid, n) IN @@reports DO
+    IF n >= min_reports
+       AND @@clusters.get(cid).size() >= min_clusters
+       AND @@trust.get(cid) >= min_trust
+       AND @@size.get(cid) >= min_size
+       AND @@anchor.containsKey(cid) THEN
+      @@qualified += cid;
+    END;
+  END;
+
+  // ---- 5. upsert one Campaign per qualifying community
+  FOREACH cid IN @@qualified DO
+    best = "";
+    best_n = 0;
+    FOREACH (pname, pc) IN @@patterns.get(cid) DO
+      IF pc > best_n THEN best = pname; best_n = pc; END;
+    END;
+    @@pattern_of += (cid -> best);
+    INSERT INTO Campaign (PRIMARY_ID, value, state, report_count, first_seen, last_seen, source,
+                          trust, city, wcc_id, community_id, name, pattern, size, cluster_count, anchor)
+      VALUES ("ring:" + @@anchor.get(cid), @@anchor.get(cid), "confirmed", @@reports.get(cid),
+              @@first.get(cid), @@last.get(cid), "louvain", @@trust.get(cid), "", -1, cid,
+              "Ring " + @@anchor.get(cid), best, @@size.get(cid), @@clusters.get(cid).size(),
+              @@anchor.get(cid));
+  END;
+
+  // ---- 6. membership edges + promotion (identifiers, texts, reports)
+  Members = {Phone.*, UpiHandle.*, BankAccount.*, Url.*, Domain.*, ApkHash.*, CryptoAddress.*,
+             MessageText.*, Report.*};
+  Members = SELECT v FROM Members:v
+            WHERE @@qualified.contains(v.community_id) AND v.state != "disputed"
+            POST-ACCUM
+              INSERT INTO IN_CAMPAIGN VALUES (v, "ring:" + @@anchor.get(v.community_id) Campaign,
+                                              now(), 1.0, 1.0),
+              @@members_linked += 1,
+              IF promote AND v.type != "Report" AND v.report_count > 0 THEN
+                v.state = "confirmed"
+              END;
+
+  PRINT @@qualified.size() AS campaigns, @@members_linked AS members_linked,
+        @@reports.size() AS communities_seen;
+}
+
+/*
+ * link_next(window_days)
+ * ----------------------
+ * Batch step 5. For every campaign, chain its reports in time order with
+ * NEXT edges (each report -> its immediate successor), which spread_map reads.
+ * O(n^2) per campaign in the number of reports; campaigns are small
+ * (tens to low thousands of reports), so this stays cheap.
+ */
+CREATE OR REPLACE QUERY link_next(INT window_days = 365) FOR GRAPH JAAL SYNTAX V1 {
+  TYPEDEF TUPLE<DATETIME ts, STRING rid> RepT;
+
+  ListAccum<RepT> @reps;        // on Campaign: its reports
+  MaxAccum<RepT>  @prev;        // on Report: latest earlier report of the same campaign
+  SumAccum<INT>   @@linked;
+
+  INT cutoff_epoch;
+  cutoff_epoch = datetime_to_epoch(now()) - window_days * 86400;
+
+  Camps = {Campaign.*};
+  Camps = SELECT c FROM Camps:c -(reverse_IN_CAMPAIGN:e)-> Report:r
+          WHERE datetime_to_epoch(r.ts) >= cutoff_epoch
+          ACCUM c.@reps += RepT(r.ts, r.id);
+
+  Reps = SELECT r FROM Camps:c -(reverse_IN_CAMPAIGN:e)-> Report:r
+         WHERE datetime_to_epoch(r.ts) >= cutoff_epoch
+         ACCUM
+           FOREACH x IN c.@reps DO
+             IF x.ts < r.ts OR (x.ts == r.ts AND x.rid < r.id) THEN r.@prev += x END
+           END
+         POST-ACCUM
+           IF r.@prev.rid != "" THEN
+             INSERT INTO NEXT VALUES (r.@prev.rid, r.id, r.ts, 1.0, 1.0,
+                                      (datetime_to_epoch(r.ts) - datetime_to_epoch(r.@prev.ts)) / 3600.0),
+             @@linked += 1
+           END;
+
+  PRINT @@linked AS next_edges;
+}

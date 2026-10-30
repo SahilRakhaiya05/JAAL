@@ -1,0 +1,40 @@
+USE GRAPH JAAL
+
+/*
+ * jaal_vtype: map a canonical key "type:value" to its vertex type name.
+ *
+ * Used as a subquery by the online queries so the server can pass the key
+ * from shared/extract.js unchanged (no ?id_key.type=... REST parameter).
+ * A key with no known prefix is treated as a Campaign id, which lets
+ * ring_of / spread_map accept the server's campaign ids verbatim.
+ *
+ * Never returns an empty string: an unknown prefix maps to "Campaign", and
+ * to_vertex_set() then simply finds nothing and the caller prints found=false.
+ * The server adapter writes campaigns as "campaign:<id>"; materialize_campaigns
+ * writes "ring:<anchor key>". Both prefixes resolve to Campaign.
+ */
+CREATE OR REPLACE QUERY jaal_vtype(STRING id_key) FOR GRAPH JAAL RETURNS (STRING) {
+  STRING prefix = "";
+  STRING vtype = "Campaign";
+  INT pos = instr(id_key, ":");          // 0-based, -1 when absent
+
+  IF pos > 0 THEN
+    prefix = lower(substr(id_key, 0, pos));
+  END;
+
+  IF prefix == "phone" THEN vtype = "Phone";
+  ELSE IF prefix == "upi" THEN vtype = "UpiHandle";
+  ELSE IF prefix == "bank_account" THEN vtype = "BankAccount";
+  ELSE IF prefix == "url" THEN vtype = "Url";
+  ELSE IF prefix == "domain" THEN vtype = "Domain";
+  ELSE IF prefix == "apk" THEN vtype = "ApkHash";
+  ELSE IF prefix == "crypto" THEN vtype = "CryptoAddress";
+  ELSE IF prefix == "text" THEN vtype = "MessageText";
+  ELSE IF prefix == "pattern" OR prefix == "remote_app" OR prefix == "ifsc" THEN vtype = "ScamPattern";
+  ELSE IF prefix == "report" THEN vtype = "Report";
+  ELSE IF prefix == "reporter" THEN vtype = "Reporter";
+  ELSE IF prefix == "campaign" OR prefix == "ring" THEN vtype = "Campaign";
+  END;
+
+  RETURN vtype;
+}

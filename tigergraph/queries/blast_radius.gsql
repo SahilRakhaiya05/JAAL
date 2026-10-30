@@ -1,0 +1,141 @@
+USE GRAPH JAAL
+
+/*
+ * blast_radius(id_key, window_days)
+ * ---------------------------------
+ * "Is this identifier part of something bigger?" The hot path behind
+ * POST /api/check: one call per triggered message.
+ *
+ * Walks up to max_hops EDGE hops (default 4) out of the seed over the
+ * evidence edges (MENTIONS, PAYS_TO both ways, RESOLVES_TO, HOSTED_ON,
+ * SAME_TEXT_AS, SIMILAR_SCRIPT), keeping only edges observed inside the time
+ * window. Reporter vertices are never entered (privacy + poisoning).
+ *
+ * Hop accounting is in IDENTIFIER hops, the unit the ring drawing uses:
+ * stepping into a Report costs 0 (a report is the evidence that links two
+ * identifiers, not a node of the ring), stepping into anything else costs 1.
+ * So 4 edge hops = identifier -> report -> identifier -> report -> identifier
+ * = identifier hop 2.
+ *
+ * Every reached vertex gets a decayed evidence score, computed in-query:
+ *     score(t) += score(s) * e.weight * 0.5 ^ (age_days(e.ts) / 21)
+ * i.e. a 21-day half-life. Only the BFS layer that first reaches a vertex
+ * contributes (shortest-path evidence), so the score is bounded and cheap.
+ *
+ * Hub guard: a vertex with more than hub_degree edges (a URL shortener
+ * domain, say) is reported but not expanded, so one bit.ly link cannot
+ * make every report on earth part of your blast radius.
+ *
+ * Returns one object (results[0]); see tigergraph/README.md "Return shapes".
+ */
+CREATE OR REPLACE QUERY blast_radius(STRING id_key, INT window_days = 90,
+                                     INT max_hops = 4, INT hub_degree = 5000) FOR GRAPH JAAL SYNTAX V1 {
+
+  TYPEDEF TUPLE<STRING id, STRING vtype, INT hop, FLOAT score, INT reports, STRING state> Hit;
+
+  // ---- per-vertex state
+  OrAccum         @visited;
+  MinAccum<INT>   @hop;
+  SumAccum<FLOAT> @score;
+
+  // ---- global results
+  SetAccum<STRING>                 @@seed_ids;
+  SumAccum<INT>                    @@reports_in_window;
+  SumAccum<INT>                    @@identifiers_reached;
+  MapAccum<STRING, SumAccum<INT>>  @@by_type;
+  MinAccum<INT>                    @@min_confirmed_hop;
+  SumAccum<INT>                    @@confirmed_hits;
+  SumAccum<INT>                    @@confirmed_within_2;
+  MinAccum<DATETIME>               @@first_seen;
+  MaxAccum<DATETIME>               @@last_seen;
+  SetAccum<STRING>                 @@campaigns;
+  HeapAccum<Hit>(50, score DESC, hop ASC) @@top;
+
+  FLOAT  HALF_LIFE_DAYS = 21.0;
+  STRING vtype;
+  INT    now_epoch;
+  INT    cutoff_epoch;
+  INT    step = 0;
+  INT    hops_to_confirmed = -1;
+  BOOL   found = FALSE;
+
+  vtype        = jaal_vtype(id_key);
+  now_epoch    = datetime_to_epoch(now());
+  cutoff_epoch = now_epoch - window_days * 86400;
+
+  @@seed_ids += id_key;
+  Seed = to_vertex_set(@@seed_ids, vtype);       // missing id -> empty set + warning, not an error
+
+  Seed = SELECT s FROM Seed:s
+         POST-ACCUM s.@visited = TRUE, s.@hop = 0, s.@score = 1.0;
+  found = Seed.size() > 0;
+
+  Reached  = Seed;
+  Frontier = Seed;
+
+  WHILE step < max_hops AND Frontier.size() > 0 DO
+    Frontier =
+      SELECT t
+      FROM Frontier:s -((MENTIONS|PAYS_TO|reverse_PAYS_TO|RESOLVES_TO|HOSTED_ON|SAME_TEXT_AS|SIMILAR_SCRIPT):e)-> :t
+      WHERE NOT t.@visited
+        AND (step == 0 OR s.outdegree() <= hub_degree)    // always expand the seed itself
+        AND datetime_to_epoch(e.ts) >= cutoff_epoch
+      ACCUM
+        // Report vertices are free; identifiers cost one hop.
+        IF t.type == "Report" THEN
+          t.@hop += s.@hop
+        ELSE
+          t.@hop += s.@hop + 1
+        END,
+        // 21-day half-life decay on the edge's observation time.
+        t.@score += s.@score * e.weight
+                    * pow(0.5, (now_epoch - datetime_to_epoch(e.ts)) / (86400.0 * HALF_LIFE_DAYS))
+      POST-ACCUM t.@visited = TRUE;
+
+    Reached = Reached UNION Frontier;
+    step = step + 1;
+  END;
+
+  // ---- summarise the reached set
+  Reached =
+    SELECT v FROM Reached:v
+    POST-ACCUM
+      IF v.type == "Report" THEN
+        @@reports_in_window += 1,
+        @@first_seen += v.first_seen,   // common attr; for a Report first_seen == ts
+        @@last_seen  += v.last_seen
+      ELSE
+        @@identifiers_reached += 1,
+        @@by_type += (v.type -> 1),
+        IF v.state == "confirmed" THEN
+          @@confirmed_hits += 1,
+          @@min_confirmed_hop += v.@hop,
+          IF v.@hop <= 2 THEN @@confirmed_within_2 += 1 END
+        END,
+        @@top += Hit(v.id, v.type, v.@hop, v.@score, v.report_count, v.state)
+      END;
+
+  // ---- rings the near neighbourhood (<= 2 identifier hops) belongs to
+  Camps =
+    SELECT c FROM Reached:v -(IN_CAMPAIGN:e)-> Campaign:c
+    WHERE v.@hop <= 2
+    ACCUM @@campaigns += c.id;
+
+  IF @@confirmed_hits > 0 THEN
+    hops_to_confirmed = @@min_confirmed_hop;
+  END;
+
+  PRINT found,
+        id_key AS center,
+        vtype AS vertex_type,
+        window_days,
+        @@reports_in_window AS reports_in_window,
+        @@identifiers_reached AS identifiers_reached,
+        @@by_type AS by_type,
+        hops_to_confirmed,
+        @@confirmed_within_2 AS confirmed_within_2_hops,
+        @@first_seen AS first_seen,
+        @@last_seen AS last_seen,
+        @@campaigns AS campaigns,
+        @@top AS top;
+}

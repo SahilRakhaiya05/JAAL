@@ -1,0 +1,112 @@
+USE GRAPH JAAL
+
+/*
+ * money_chokepoint(k)
+ * -------------------
+ * Where does the money land? Ranks the receiving side of the money graph
+ * (BankAccount, UpiHandle, CryptoAddress) by how many DISTINCT phones and
+ * handles route victims to it, tie-broken by a PageRank computed over the
+ * PAYS_TO subgraph inside this query.
+ *
+ * Why in-query PageRank instead of GDS tg_pagerank: tg_pagerank takes a single
+ * STRING v_type and a single STRING e_type (homogeneous graphs), while the
+ * money graph is heterogeneous (Phone -> UpiHandle -> BankAccount ...). The
+ * loop below is the same power iteration as tg_pagerank (damping 0.85,
+ * max_change 0.001, <= 20 iterations), written over the four money vertex
+ * types, with the score flowing along PAYS_TO so it pools at receivers.
+ *
+ * Three inbound signals, all distinct-vertex counts (SetAccum<VERTEX>):
+ *   inbound_phones      Phone -PAYS_TO-> this
+ *   inbound_handles     UpiHandle -PAYS_TO-> this
+ *   co_reported_phones  phones mentioned in the same reports as this account
+ *                       (the server only draws PAYS_TO when a message says
+ *                       "pay to X"; co-mention catches the rest)
+ * inbound_total = |inbound_phones UNION co_reported_phones| + inbound_handles.
+ * pagerank is 0 for a receiver that has no PAYS_TO edge at all.
+ *
+ * This is what a bank / NPCI freeze request should target: one account
+ * behind 40 phone numbers is one action instead of 40.
+ */
+CREATE OR REPLACE QUERY money_chokepoint(INT k = 10, INT window_days = 365) FOR GRAPH JAAL SYNTAX V1 {
+
+  TYPEDEF TUPLE<STRING id, STRING kind, STRING label, INT inbound_phones, INT inbound_handles,
+                INT co_reported_phones, INT inbound_total, FLOAT pagerank, INT reports,
+                STRING state, STRING campaign> Choke;
+
+  SetAccum<VERTEX>  @in_phones;      // on receivers
+  SetAccum<VERTEX>  @in_handles;     // on receivers
+  SetAccum<VERTEX>  @co_phones;      // on receivers
+  SetAccum<VERTEX>  @all_phones;     // on receivers: union of the two phone signals
+  SetAccum<VERTEX>  @phones;         // on reports: phones the report mentions
+  MaxAccum<STRING>  @campaign;
+  SumAccum<FLOAT>   @pr;
+  SumAccum<FLOAT>   @recv;
+
+  MaxAccum<FLOAT>   @@max_diff = 9999;
+  SumAccum<INT>     @@iterations;
+  HeapAccum<Choke>(k, inbound_total DESC, pagerank DESC, id ASC) @@top;
+  ListAccum<Choke>  @@ranked;
+
+  FLOAT DAMPING = 0.85;
+  INT   cutoff_epoch;
+  cutoff_epoch = datetime_to_epoch(now()) - window_days * 86400;
+
+  Receivers = {BankAccount.*, UpiHandle.*, CryptoAddress.*};
+
+  // ---- 1. distinct payers: walk PAYS_TO backwards from each receiver
+  Paid = SELECT t FROM Receivers:t -(reverse_PAYS_TO:e)-> :s
+         WHERE datetime_to_epoch(e.ts) >= cutoff_epoch
+         ACCUM
+           IF s.type == "Phone" THEN
+             t.@in_phones += s,
+             t.@all_phones += s
+           ELSE
+             t.@in_handles += s
+           END;
+
+  // ---- 2. phones co-mentioned with a receiver in the same (undisputed) report
+  Reps = SELECT r FROM Receivers:t -(MENTIONS:e)-> Report:r
+         WHERE datetime_to_epoch(e.ts) >= cutoff_epoch AND r.state != "disputed";
+  Reps = SELECT r FROM Reps:r -(MENTIONS:e)-> Phone:p
+         ACCUM r.@phones += p;
+  Co   = SELECT t FROM Reps:r -(MENTIONS:e)-> (BankAccount|UpiHandle|CryptoAddress):t
+         ACCUM t.@co_phones += r.@phones,
+               t.@all_phones += r.@phones;
+
+  // ---- 3. PageRank over the heterogeneous PAYS_TO subgraph
+  Net = {Phone.*, UpiHandle.*, BankAccount.*, CryptoAddress.*};
+  Net = SELECT v FROM Net:v
+        WHERE v.outdegree("PAYS_TO") > 0 OR v.outdegree("reverse_PAYS_TO") > 0
+        POST-ACCUM v.@pr = 1.0;
+
+  WHILE @@max_diff > 0.001 LIMIT 20 DO
+    @@max_diff = 0;
+    @@iterations += 1;
+    Sent = SELECT s FROM Net:s -(PAYS_TO:e)-> :t
+           ACCUM t.@recv += s.@pr / s.outdegree("PAYS_TO");
+    Net  = SELECT v FROM Net:v
+           POST-ACCUM
+             v.@pr = (1.0 - DAMPING) + DAMPING * v.@recv,
+             v.@recv = 0,
+             @@max_diff += abs(v.@pr - v.@pr');
+  END;
+
+  // ---- 4. campaign label, then rank
+  Labeled = SELECT t FROM Receivers:t -(IN_CAMPAIGN:e)-> Campaign:c
+            ACCUM t.@campaign += c.id;
+
+  Ranked = SELECT t FROM Receivers:t
+           WHERE t.@in_phones.size() + t.@in_handles.size() + t.@co_phones.size() > 0
+           POST-ACCUM
+             @@top += Choke(t.id, substr(t.id, 0, instr(t.id, ":")), t.value,
+                            t.@in_phones.size(), t.@in_handles.size(), t.@co_phones.size(),
+                            t.@all_phones.size() + t.@in_handles.size(),
+                            t.@pr, t.report_count, t.state, t.@campaign);
+
+  WHILE @@top.size() > 0 DO
+    @@ranked += @@top.top();
+    @@top.pop();
+  END;
+
+  PRINT @@ranked AS chokepoints, @@iterations AS pagerank_iterations;
+}
