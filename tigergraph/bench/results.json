@@ -1,0 +1,1481 @@
+{
+  "runs": [
+    {
+      "engine": "memory (Node BFS, CSR)",
+      "dataset": "200000",
+      "edges": 200000,
+      "vertices": 184068,
+      "query": "blast radius, 4 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.004,
+      "p95_ms": 0.007,
+      "mean_ms": 0.004,
+      "min_ms": 0.001,
+      "max_ms": 0.009,
+      "load_s": 0.26,
+      "notes": "in-process, single thread, no persistence",
+      "answers": {
+        "phone:+916000152224": {
+          "reached": 18,
+          "reports": 6
+        },
+        "phone:+916000074202": {
+          "reached": 9,
+          "reports": 3
+        },
+        "phone:+916000091316": {
+          "reached": 35,
+          "reports": 15
+        },
+        "upi:h3bm@paytm": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000190501": {
+          "reached": 36,
+          "reports": 14
+        },
+        "phone:+916000214671": {
+          "reached": 9,
+          "reports": 2
+        },
+        "domain:d7vi-kyc.in": {
+          "reached": 28,
+          "reports": 12
+        },
+        "upi:h46z@axl": {
+          "reached": 17,
+          "reports": 6
+        },
+        "bank_account:50100000006540": {
+          "reached": 24,
+          "reports": 10
+        },
+        "phone:+916000118723": {
+          "reached": 31,
+          "reports": 17
+        },
+        "phone:+916000229243": {
+          "reached": 9,
+          "reports": 3
+        },
+        "upi:hcxb@okhdfcbank": {
+          "reached": 27,
+          "reports": 15
+        },
+        "bank_account:50100000000208": {
+          "reached": 16,
+          "reports": 6
+        },
+        "domain:d40o-kyc.in": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h21x@okaxis": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h2jj@okaxis": {
+          "reached": 19,
+          "reports": 7
+        },
+        "phone:+916000079289": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000330124": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h9n2@ybl": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h2ia@okaxis": {
+          "reached": 2,
+          "reports": 1
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0"
+      },
+      "recordedAt": "2026-10-30T06:50:37.894Z"
+    },
+    {
+      "engine": "postgres 18.4 (recursive CTE)",
+      "dataset": "200000",
+      "edges": 200000,
+      "vertices": 184068,
+      "query": "blast radius, 4 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.452,
+      "p95_ms": 0.798,
+      "mean_ms": 0.476,
+      "min_ms": 0.228,
+      "max_ms": 1.163,
+      "load_s": 3.66,
+      "notes": "index adj(src,ts) INCLUDE(dst); no timeouts",
+      "answers": {
+        "phone:+916000152224": {
+          "reached": 18,
+          "reports": 6
+        },
+        "phone:+916000074202": {
+          "reached": 9,
+          "reports": 3
+        },
+        "phone:+916000091316": {
+          "reached": 35,
+          "reports": 15
+        },
+        "upi:h3bm@paytm": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000190501": {
+          "reached": 36,
+          "reports": 14
+        },
+        "phone:+916000214671": {
+          "reached": 9,
+          "reports": 2
+        },
+        "domain:d7vi-kyc.in": {
+          "reached": 28,
+          "reports": 12
+        },
+        "upi:h46z@axl": {
+          "reached": 17,
+          "reports": 6
+        },
+        "bank_account:50100000006540": {
+          "reached": 24,
+          "reports": 10
+        },
+        "phone:+916000118723": {
+          "reached": 31,
+          "reports": 17
+        },
+        "phone:+916000229243": {
+          "reached": 9,
+          "reports": 3
+        },
+        "upi:hcxb@okhdfcbank": {
+          "reached": 27,
+          "reports": 15
+        },
+        "bank_account:50100000000208": {
+          "reached": 16,
+          "reports": 6
+        },
+        "domain:d40o-kyc.in": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h21x@okaxis": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h2jj@okaxis": {
+          "reached": 19,
+          "reports": 7
+        },
+        "phone:+916000079289": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000330124": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h9n2@ybl": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h2ia@okaxis": {
+          "reached": 2,
+          "reports": 1
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0",
+        "postgres": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit"
+      },
+      "recordedAt": "2026-10-30T06:50:41.802Z"
+    },
+    {
+      "engine": "memory (Node BFS, CSR)",
+      "dataset": "200000",
+      "edges": 200000,
+      "vertices": 184068,
+      "query": "blast radius, 8 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.006,
+      "p95_ms": 0.023,
+      "mean_ms": 0.01,
+      "min_ms": 0.002,
+      "max_ms": 0.027,
+      "load_s": 0.26,
+      "notes": "in-process, single thread, no persistence",
+      "answers": {
+        "phone:+916000152224": {
+          "reached": 118,
+          "reports": 58
+        },
+        "phone:+916000074202": {
+          "reached": 9,
+          "reports": 3
+        },
+        "phone:+916000091316": {
+          "reached": 103,
+          "reports": 48
+        },
+        "upi:h3bm@paytm": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000190501": {
+          "reached": 70,
+          "reports": 33
+        },
+        "phone:+916000214671": {
+          "reached": 10,
+          "reports": 3
+        },
+        "domain:d7vi-kyc.in": {
+          "reached": 67,
+          "reports": 31
+        },
+        "upi:h46z@axl": {
+          "reached": 111,
+          "reports": 49
+        },
+        "bank_account:50100000006540": {
+          "reached": 77,
+          "reports": 38
+        },
+        "phone:+916000118723": {
+          "reached": 35,
+          "reports": 17
+        },
+        "phone:+916000229243": {
+          "reached": 66,
+          "reports": 31
+        },
+        "upi:hcxb@okhdfcbank": {
+          "reached": 30,
+          "reports": 16
+        },
+        "bank_account:50100000000208": {
+          "reached": 66,
+          "reports": 31
+        },
+        "domain:d40o-kyc.in": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h21x@okaxis": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h2jj@okaxis": {
+          "reached": 19,
+          "reports": 7
+        },
+        "phone:+916000079289": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000330124": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h9n2@ybl": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h2ia@okaxis": {
+          "reached": 2,
+          "reports": 1
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0"
+      },
+      "recordedAt": "2026-10-30T06:50:42.157Z"
+    },
+    {
+      "engine": "postgres 18.4 (recursive CTE)",
+      "dataset": "200000",
+      "edges": 200000,
+      "vertices": 184068,
+      "query": "blast radius, 8 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.65,
+      "p95_ms": 1.464,
+      "mean_ms": 0.754,
+      "min_ms": 0.237,
+      "max_ms": 1.621,
+      "load_s": null,
+      "notes": "index adj(src,ts) INCLUDE(dst); no timeouts",
+      "answers": {
+        "phone:+916000152224": {
+          "reached": 118,
+          "reports": 58
+        },
+        "phone:+916000074202": {
+          "reached": 9,
+          "reports": 3
+        },
+        "phone:+916000091316": {
+          "reached": 103,
+          "reports": 48
+        },
+        "upi:h3bm@paytm": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000190501": {
+          "reached": 70,
+          "reports": 33
+        },
+        "phone:+916000214671": {
+          "reached": 10,
+          "reports": 3
+        },
+        "domain:d7vi-kyc.in": {
+          "reached": 67,
+          "reports": 31
+        },
+        "upi:h46z@axl": {
+          "reached": 111,
+          "reports": 49
+        },
+        "bank_account:50100000006540": {
+          "reached": 77,
+          "reports": 38
+        },
+        "phone:+916000118723": {
+          "reached": 35,
+          "reports": 17
+        },
+        "phone:+916000229243": {
+          "reached": 66,
+          "reports": 31
+        },
+        "upi:hcxb@okhdfcbank": {
+          "reached": 30,
+          "reports": 16
+        },
+        "bank_account:50100000000208": {
+          "reached": 66,
+          "reports": 31
+        },
+        "domain:d40o-kyc.in": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h21x@okaxis": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h2jj@okaxis": {
+          "reached": 19,
+          "reports": 7
+        },
+        "phone:+916000079289": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000330124": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h9n2@ybl": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h2ia@okaxis": {
+          "reached": 2,
+          "reports": 1
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0",
+        "postgres": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit"
+      },
+      "recordedAt": "2026-10-30T06:50:42.486Z"
+    },
+    {
+      "engine": "memory (Node BFS, CSR)",
+      "dataset": "1000000",
+      "edges": 1000000,
+      "vertices": 912502,
+      "query": "blast radius, 4 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.005,
+      "p95_ms": 0.014,
+      "mean_ms": 0.007,
+      "min_ms": 0.001,
+      "max_ms": 0.015,
+      "load_s": 1.57,
+      "notes": "in-process, single thread, no persistence",
+      "answers": {
+        "domain:d1hl4-kyc.in": {
+          "reached": 22,
+          "reports": 8
+        },
+        "upi:h1vne@axl": {
+          "reached": 7,
+          "reports": 3
+        },
+        "upi:h1wwc@okaxis": {
+          "reached": 26,
+          "reports": 10
+        },
+        "bank_account:50100000045010": {
+          "reached": 7,
+          "reports": 2
+        },
+        "phone:+916001612525": {
+          "reached": 38,
+          "reports": 19
+        },
+        "phone:+916001483927": {
+          "reached": 50,
+          "reports": 23
+        },
+        "phone:+916000575205": {
+          "reached": 32,
+          "reports": 14
+        },
+        "upi:he60@ybl": {
+          "reached": 14,
+          "reports": 4
+        },
+        "phone:+916000126082": {
+          "reached": 13,
+          "reports": 5
+        },
+        "phone:+916000211155": {
+          "reached": 10,
+          "reports": 5
+        },
+        "phone:+916000249173": {
+          "reached": 27,
+          "reports": 12
+        },
+        "domain:dya0-kyc.in": {
+          "reached": 56,
+          "reports": 27
+        },
+        "phone:+916001563647": {
+          "reached": 22,
+          "reports": 10
+        },
+        "phone:+916000726493": {
+          "reached": 11,
+          "reports": 6
+        },
+        "phone:+916001552698": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000263441": {
+          "reached": 51,
+          "reports": 20
+        },
+        "phone:+916000010143": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000044750": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:huwh@okaxis": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916001563076": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0"
+      },
+      "recordedAt": "2026-10-30T06:50:44.136Z"
+    },
+    {
+      "engine": "postgres 18.4 (recursive CTE)",
+      "dataset": "1000000",
+      "edges": 1000000,
+      "vertices": 912502,
+      "query": "blast radius, 4 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.298,
+      "p95_ms": 0.597,
+      "mean_ms": 0.357,
+      "min_ms": 0.144,
+      "max_ms": 0.818,
+      "load_s": 28.28,
+      "notes": "index adj(src,ts) INCLUDE(dst); no timeouts",
+      "answers": {
+        "domain:d1hl4-kyc.in": {
+          "reached": 22,
+          "reports": 8
+        },
+        "upi:h1vne@axl": {
+          "reached": 7,
+          "reports": 3
+        },
+        "upi:h1wwc@okaxis": {
+          "reached": 26,
+          "reports": 10
+        },
+        "bank_account:50100000045010": {
+          "reached": 7,
+          "reports": 2
+        },
+        "phone:+916001612525": {
+          "reached": 38,
+          "reports": 19
+        },
+        "phone:+916001483927": {
+          "reached": 50,
+          "reports": 23
+        },
+        "phone:+916000575205": {
+          "reached": 32,
+          "reports": 14
+        },
+        "upi:he60@ybl": {
+          "reached": 14,
+          "reports": 4
+        },
+        "phone:+916000126082": {
+          "reached": 13,
+          "reports": 5
+        },
+        "phone:+916000211155": {
+          "reached": 10,
+          "reports": 5
+        },
+        "phone:+916000249173": {
+          "reached": 27,
+          "reports": 12
+        },
+        "domain:dya0-kyc.in": {
+          "reached": 56,
+          "reports": 27
+        },
+        "phone:+916001563647": {
+          "reached": 22,
+          "reports": 10
+        },
+        "phone:+916000726493": {
+          "reached": 11,
+          "reports": 6
+        },
+        "phone:+916001552698": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000263441": {
+          "reached": 51,
+          "reports": 20
+        },
+        "phone:+916000010143": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000044750": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:huwh@okaxis": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916001563076": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0",
+        "postgres": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit"
+      },
+      "recordedAt": "2026-10-30T06:51:12.625Z"
+    },
+    {
+      "engine": "memory (Node BFS, CSR)",
+      "dataset": "1000000",
+      "edges": 1000000,
+      "vertices": 912502,
+      "query": "blast radius, 8 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.009,
+      "p95_ms": 0.025,
+      "mean_ms": 0.01,
+      "min_ms": 0.001,
+      "max_ms": 0.027,
+      "load_s": 5.75,
+      "notes": "in-process, single thread, no persistence",
+      "answers": {
+        "domain:d1hl4-kyc.in": {
+          "reached": 103,
+          "reports": 44
+        },
+        "upi:h1vne@axl": {
+          "reached": 7,
+          "reports": 3
+        },
+        "upi:h1wwc@okaxis": {
+          "reached": 79,
+          "reports": 37
+        },
+        "bank_account:50100000045010": {
+          "reached": 15,
+          "reports": 7
+        },
+        "phone:+916001612525": {
+          "reached": 38,
+          "reports": 19
+        },
+        "phone:+916001483927": {
+          "reached": 67,
+          "reports": 33
+        },
+        "phone:+916000575205": {
+          "reached": 108,
+          "reports": 47
+        },
+        "upi:he60@ybl": {
+          "reached": 77,
+          "reports": 31
+        },
+        "phone:+916000126082": {
+          "reached": 36,
+          "reports": 18
+        },
+        "phone:+916000211155": {
+          "reached": 12,
+          "reports": 6
+        },
+        "phone:+916000249173": {
+          "reached": 37,
+          "reports": 18
+        },
+        "domain:dya0-kyc.in": {
+          "reached": 74,
+          "reports": 37
+        },
+        "phone:+916001563647": {
+          "reached": 28,
+          "reports": 13
+        },
+        "phone:+916000726493": {
+          "reached": 11,
+          "reports": 6
+        },
+        "phone:+916001552698": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000263441": {
+          "reached": 51,
+          "reports": 20
+        },
+        "phone:+916000010143": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000044750": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:huwh@okaxis": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916001563076": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0"
+      },
+      "recordedAt": "2026-10-30T06:51:18.876Z"
+    },
+    {
+      "engine": "postgres 18.4 (recursive CTE)",
+      "dataset": "1000000",
+      "edges": 1000000,
+      "vertices": 912502,
+      "query": "blast radius, 8 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.794,
+      "p95_ms": 1.966,
+      "mean_ms": 0.884,
+      "min_ms": 0.206,
+      "max_ms": 1.992,
+      "load_s": null,
+      "notes": "index adj(src,ts) INCLUDE(dst); no timeouts",
+      "answers": {
+        "domain:d1hl4-kyc.in": {
+          "reached": 103,
+          "reports": 44
+        },
+        "upi:h1vne@axl": {
+          "reached": 7,
+          "reports": 3
+        },
+        "upi:h1wwc@okaxis": {
+          "reached": 79,
+          "reports": 37
+        },
+        "bank_account:50100000045010": {
+          "reached": 15,
+          "reports": 7
+        },
+        "phone:+916001612525": {
+          "reached": 38,
+          "reports": 19
+        },
+        "phone:+916001483927": {
+          "reached": 67,
+          "reports": 33
+        },
+        "phone:+916000575205": {
+          "reached": 108,
+          "reports": 47
+        },
+        "upi:he60@ybl": {
+          "reached": 77,
+          "reports": 31
+        },
+        "phone:+916000126082": {
+          "reached": 36,
+          "reports": 18
+        },
+        "phone:+916000211155": {
+          "reached": 12,
+          "reports": 6
+        },
+        "phone:+916000249173": {
+          "reached": 37,
+          "reports": 18
+        },
+        "domain:dya0-kyc.in": {
+          "reached": 74,
+          "reports": 37
+        },
+        "phone:+916001563647": {
+          "reached": 28,
+          "reports": 13
+        },
+        "phone:+916000726493": {
+          "reached": 11,
+          "reports": 6
+        },
+        "phone:+916001552698": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000263441": {
+          "reached": 51,
+          "reports": 20
+        },
+        "phone:+916000010143": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000044750": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:huwh@okaxis": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916001563076": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0",
+        "postgres": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit"
+      },
+      "recordedAt": "2026-10-30T06:51:23.608Z"
+    },
+    {
+      "engine": "memory (Node BFS, CSR)",
+      "dataset": "1000000-b0.3",
+      "edges": 1000000,
+      "vertices": 841564,
+      "query": "blast radius, 4 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.008,
+      "p95_ms": 0.036,
+      "mean_ms": 0.014,
+      "min_ms": 0.002,
+      "max_ms": 0.103,
+      "load_s": 4.48,
+      "notes": "in-process, single thread, no persistence",
+      "answers": {
+        "upi:hyk@ibl": {
+          "reached": 56,
+          "reports": 22
+        },
+        "phone:+916000417385": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h9gf@ybl": {
+          "reached": 80,
+          "reports": 39
+        },
+        "phone:+916001424313": {
+          "reached": 28,
+          "reports": 10
+        },
+        "phone:+916000947398": {
+          "reached": 33,
+          "reports": 14
+        },
+        "upi:hpl2@paytm": {
+          "reached": 64,
+          "reports": 24
+        },
+        "upi:hkhb@okhdfcbank": {
+          "reached": 43,
+          "reports": 12
+        },
+        "phone:+916001432090": {
+          "reached": 36,
+          "reports": 15
+        },
+        "bank_account:50100000000545": {
+          "reached": 96,
+          "reports": 39
+        },
+        "phone:+916000956630": {
+          "reached": 39,
+          "reports": 15
+        },
+        "phone:+916000557936": {
+          "reached": 38,
+          "reports": 17
+        },
+        "upi:h20rv@okaxis": {
+          "reached": 43,
+          "reports": 21
+        },
+        "bank_account:50100000004153": {
+          "reached": 89,
+          "reports": 39
+        },
+        "upi:h13up@okaxis": {
+          "reached": 7,
+          "reports": 3
+        },
+        "domain:drd2-kyc.in": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h10kx@okhdfcbank": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000413363": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000228387": {
+          "reached": 3,
+          "reports": 1
+        },
+        "bank_account:50100000022582": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000004197": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0"
+      },
+      "recordedAt": "2026-10-30T06:51:28.212Z"
+    },
+    {
+      "engine": "postgres 18.4 (recursive CTE)",
+      "dataset": "1000000-b0.3",
+      "edges": 1000000,
+      "vertices": 841564,
+      "query": "blast radius, 4 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.424,
+      "p95_ms": 0.933,
+      "mean_ms": 0.512,
+      "min_ms": 0.169,
+      "max_ms": 1.219,
+      "load_s": 29.47,
+      "notes": "index adj(src,ts) INCLUDE(dst); no timeouts",
+      "answers": {
+        "upi:hyk@ibl": {
+          "reached": 56,
+          "reports": 22
+        },
+        "phone:+916000417385": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h9gf@ybl": {
+          "reached": 80,
+          "reports": 39
+        },
+        "phone:+916001424313": {
+          "reached": 28,
+          "reports": 10
+        },
+        "phone:+916000947398": {
+          "reached": 33,
+          "reports": 14
+        },
+        "upi:hpl2@paytm": {
+          "reached": 64,
+          "reports": 24
+        },
+        "upi:hkhb@okhdfcbank": {
+          "reached": 43,
+          "reports": 12
+        },
+        "phone:+916001432090": {
+          "reached": 36,
+          "reports": 15
+        },
+        "bank_account:50100000000545": {
+          "reached": 96,
+          "reports": 39
+        },
+        "phone:+916000956630": {
+          "reached": 39,
+          "reports": 15
+        },
+        "phone:+916000557936": {
+          "reached": 38,
+          "reports": 17
+        },
+        "upi:h20rv@okaxis": {
+          "reached": 43,
+          "reports": 21
+        },
+        "bank_account:50100000004153": {
+          "reached": 89,
+          "reports": 39
+        },
+        "upi:h13up@okaxis": {
+          "reached": 7,
+          "reports": 3
+        },
+        "domain:drd2-kyc.in": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h10kx@okhdfcbank": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000413363": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000228387": {
+          "reached": 3,
+          "reports": 1
+        },
+        "bank_account:50100000022582": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000004197": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0",
+        "postgres": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit"
+      },
+      "recordedAt": "2026-10-30T06:51:57.888Z"
+    },
+    {
+      "engine": "memory (Node BFS, CSR)",
+      "dataset": "1000000-b0.3",
+      "edges": 1000000,
+      "vertices": 841564,
+      "query": "blast radius, 8 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.034,
+      "p95_ms": 0.32,
+      "mean_ms": 0.1,
+      "min_ms": 0.002,
+      "max_ms": 0.516,
+      "load_s": 4.83,
+      "notes": "in-process, single thread, no persistence",
+      "answers": {
+        "upi:hyk@ibl": {
+          "reached": 2029,
+          "reports": 783
+        },
+        "phone:+916000417385": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h9gf@ybl": {
+          "reached": 1718,
+          "reports": 834
+        },
+        "phone:+916001424313": {
+          "reached": 440,
+          "reports": 179
+        },
+        "phone:+916000947398": {
+          "reached": 607,
+          "reports": 240
+        },
+        "upi:hpl2@paytm": {
+          "reached": 976,
+          "reports": 384
+        },
+        "upi:hkhb@okhdfcbank": {
+          "reached": 686,
+          "reports": 269
+        },
+        "phone:+916001432090": {
+          "reached": 125,
+          "reports": 46
+        },
+        "bank_account:50100000000545": {
+          "reached": 3223,
+          "reports": 1487
+        },
+        "phone:+916000956630": {
+          "reached": 265,
+          "reports": 116
+        },
+        "phone:+916000557936": {
+          "reached": 617,
+          "reports": 262
+        },
+        "upi:h20rv@okaxis": {
+          "reached": 204,
+          "reports": 95
+        },
+        "bank_account:50100000004153": {
+          "reached": 1768,
+          "reports": 759
+        },
+        "upi:h13up@okaxis": {
+          "reached": 154,
+          "reports": 59
+        },
+        "domain:drd2-kyc.in": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h10kx@okhdfcbank": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000413363": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000228387": {
+          "reached": 3,
+          "reports": 1
+        },
+        "bank_account:50100000022582": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000004197": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0"
+      },
+      "recordedAt": "2026-10-30T06:52:03.283Z"
+    },
+    {
+      "engine": "postgres 18.4 (recursive CTE)",
+      "dataset": "1000000-b0.3",
+      "edges": 1000000,
+      "vertices": 841564,
+      "query": "blast radius, 8 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 2.47,
+      "p95_ms": 308.663,
+      "mean_ms": 45.303,
+      "min_ms": 0.241,
+      "max_ms": 334.503,
+      "load_s": null,
+      "notes": "index adj(src,ts) INCLUDE(dst); no timeouts",
+      "answers": {
+        "upi:hyk@ibl": {
+          "reached": 2029,
+          "reports": 783
+        },
+        "phone:+916000417385": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h9gf@ybl": {
+          "reached": 1718,
+          "reports": 834
+        },
+        "phone:+916001424313": {
+          "reached": 440,
+          "reports": 179
+        },
+        "phone:+916000947398": {
+          "reached": 607,
+          "reports": 240
+        },
+        "upi:hpl2@paytm": {
+          "reached": 976,
+          "reports": 384
+        },
+        "upi:hkhb@okhdfcbank": {
+          "reached": 686,
+          "reports": 269
+        },
+        "phone:+916001432090": {
+          "reached": 125,
+          "reports": 46
+        },
+        "bank_account:50100000000545": {
+          "reached": 3223,
+          "reports": 1487
+        },
+        "phone:+916000956630": {
+          "reached": 265,
+          "reports": 116
+        },
+        "phone:+916000557936": {
+          "reached": 617,
+          "reports": 262
+        },
+        "upi:h20rv@okaxis": {
+          "reached": 204,
+          "reports": 95
+        },
+        "bank_account:50100000004153": {
+          "reached": 1768,
+          "reports": 759
+        },
+        "upi:h13up@okaxis": {
+          "reached": 154,
+          "reports": 59
+        },
+        "domain:drd2-kyc.in": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h10kx@okhdfcbank": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000413363": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000228387": {
+          "reached": 3,
+          "reports": 1
+        },
+        "bank_account:50100000022582": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000004197": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0",
+        "postgres": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit"
+      },
+      "recordedAt": "2026-10-30T06:52:06.291Z"
+    },
+    {
+      "engine": "memory (Node BFS, CSR)",
+      "dataset": "1000000-b0.3",
+      "edges": 1000000,
+      "vertices": 841564,
+      "query": "blast radius, 12 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 0.283,
+      "p95_ms": 8.778,
+      "mean_ms": 10.267,
+      "min_ms": 0.002,
+      "max_ms": 170.255,
+      "load_s": 2.72,
+      "notes": "in-process, single thread, no persistence",
+      "answers": {
+        "upi:hyk@ibl": {
+          "reached": 40768,
+          "reports": 17783
+        },
+        "phone:+916000417385": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h9gf@ybl": {
+          "reached": 25375,
+          "reports": 12386
+        },
+        "phone:+916001424313": {
+          "reached": 5368,
+          "reports": 2323
+        },
+        "phone:+916000947398": {
+          "reached": 9038,
+          "reports": 3746
+        },
+        "upi:hpl2@paytm": {
+          "reached": 18222,
+          "reports": 7853
+        },
+        "upi:hkhb@okhdfcbank": {
+          "reached": 16198,
+          "reports": 7206
+        },
+        "phone:+916001432090": {
+          "reached": 1330,
+          "reports": 536
+        },
+        "bank_account:50100000000545": {
+          "reached": 53414,
+          "reports": 25642
+        },
+        "phone:+916000956630": {
+          "reached": 4354,
+          "reports": 1990
+        },
+        "phone:+916000557936": {
+          "reached": 14149,
+          "reports": 6765
+        },
+        "upi:h20rv@okaxis": {
+          "reached": 1826,
+          "reports": 907
+        },
+        "bank_account:50100000004153": {
+          "reached": 33478,
+          "reports": 14974
+        },
+        "upi:h13up@okaxis": {
+          "reached": 1965,
+          "reports": 810
+        },
+        "domain:drd2-kyc.in": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h10kx@okhdfcbank": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000413363": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000228387": {
+          "reached": 3,
+          "reports": 1
+        },
+        "bank_account:50100000022582": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000004197": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0"
+      },
+      "recordedAt": "2026-10-30T06:56:48.505Z"
+    },
+    {
+      "engine": "postgres 18.4 (recursive CTE)",
+      "dataset": "1000000-b0.3",
+      "edges": 1000000,
+      "vertices": 841564,
+      "query": "blast radius, 12 hops, 90-day window",
+      "runs": 20,
+      "p50_ms": 24.004,
+      "p95_ms": 315.968,
+      "mean_ms": 101.826,
+      "min_ms": 0.312,
+      "max_ms": 500.433,
+      "load_s": null,
+      "notes": "index adj(src,ts) INCLUDE(dst); no timeouts",
+      "answers": {
+        "upi:hyk@ibl": {
+          "reached": 40768,
+          "reports": 17783
+        },
+        "phone:+916000417385": {
+          "reached": 1,
+          "reports": 0
+        },
+        "upi:h9gf@ybl": {
+          "reached": 25375,
+          "reports": 12386
+        },
+        "phone:+916001424313": {
+          "reached": 5368,
+          "reports": 2323
+        },
+        "phone:+916000947398": {
+          "reached": 9038,
+          "reports": 3746
+        },
+        "upi:hpl2@paytm": {
+          "reached": 18222,
+          "reports": 7853
+        },
+        "upi:hkhb@okhdfcbank": {
+          "reached": 16198,
+          "reports": 7206
+        },
+        "phone:+916001432090": {
+          "reached": 1330,
+          "reports": 536
+        },
+        "bank_account:50100000000545": {
+          "reached": 53414,
+          "reports": 25642
+        },
+        "phone:+916000956630": {
+          "reached": 4354,
+          "reports": 1990
+        },
+        "phone:+916000557936": {
+          "reached": 14149,
+          "reports": 6765
+        },
+        "upi:h20rv@okaxis": {
+          "reached": 1826,
+          "reports": 907
+        },
+        "bank_account:50100000004153": {
+          "reached": 33478,
+          "reports": 14974
+        },
+        "upi:h13up@okaxis": {
+          "reached": 1965,
+          "reports": 810
+        },
+        "domain:drd2-kyc.in": {
+          "reached": 3,
+          "reports": 1
+        },
+        "upi:h10kx@okhdfcbank": {
+          "reached": 1,
+          "reports": 0
+        },
+        "phone:+916000413363": {
+          "reached": 3,
+          "reports": 1
+        },
+        "phone:+916000228387": {
+          "reached": 3,
+          "reports": 1
+        },
+        "bank_account:50100000022582": {
+          "reached": 1,
+          "reports": 0
+        },
+        "bank_account:50100000004197": {
+          "reached": 1,
+          "reports": 0
+        }
+      },
+      "machine": {
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "cores": 16,
+        "ramGB": 16,
+        "os": "win32 10.0.26300",
+        "node": "v22.15.0",
+        "postgres": "PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit"
+      },
+      "recordedAt": "2026-10-30T06:56:59.213Z"
+    }
+  ]
+}

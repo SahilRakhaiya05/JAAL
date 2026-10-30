@@ -1,0 +1,16 @@
+{
+  "name": "@jaal/tigergraph-bench",
+  "private": true,
+  "type": "module",
+  "description": "TigerGraph vs Postgres vs in-memory blast-radius benchmark",
+  "scripts": {
+    "generate": "node generate.mjs --edges 200000",
+    "memory": "node run-memory.mjs --edges 200000",
+    "postgres": "node run-postgres.mjs --edges 200000",
+    "tigergraph": "node run-tigergraph.mjs --edges 200000",
+    "report": "node report.mjs"
+  },
+  "dependencies": {
+    "pg": "8.23.1"
+  }
+}
