@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JAAL</title>
+  <link rel="stylesheet" href="../lib/tokens.css">
+  <link rel="stylesheet" href="pages.css">
+  <style>
+    .card-host { display: block; }
+    .actions-h { margin-top: 4px; }
+    .dispute-form { display: grid; gap: 10px; }
+    .result-note { margin: 8px 0 0; font: var(--t-caption); color: var(--text-lo); }
+    .foot { padding: 4px 16px 28px; font: var(--t-micro); color: var(--text-lo); max-width: 560px; margin: 0 auto; }
+    .mockflag { font: var(--t-micro); color: #B4A9FF; }
+    .callpanel .num { font: var(--t-display); letter-spacing: .04em; }
+    .callpanel ol { margin: 8px 0 0; padding-left: 20px; }
+    .callpanel li { margin: 4px 0; }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#6E5BFF"/><g stroke="#fff" stroke-width="1.5" fill="none" stroke-opacity=".85"><circle cx="16" cy="16" r="9"/><path d="M16 7v18M8.2 11.5l15.6 9M8.2 20.5l15.6-9"/></g><g fill="#fff"><circle cx="16" cy="16" r="2.8"/><circle cx="16" cy="7" r="1.9"/><circle cx="23.8" cy="11.5" r="1.9"/><circle cx="23.8" cy="20.5" r="1.9"/><circle cx="16" cy="25" r="1.9"/><circle cx="8.2" cy="20.5" r="1.9"/><circle cx="8.2" cy="11.5" r="1.9"/></g></svg>
+    <div class="grow"><div class="brand">JAAL <small>जाल · scam shield</small></div></div>
+    <span class="pill" id="net"><i></i><span>Checking…</span></span>
+    <a class="iconbtn" id="opts" href="options.html" target="_blank" aria-label="Settings" title="Settings"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="2.6"/><path d="M10 1.8v2.4M10 15.8v2.4M1.8 10h2.4M15.8 10h2.4M4.2 4.2l1.7 1.7M14.1 14.1l1.7 1.7M4.2 15.8l1.7-1.7M14.1 5.9l1.7-1.7"/></svg></a>
+  </header>
+
+  <main>
+    <section aria-labelledby="latest-h">
+      <h2 class="section-h" id="latest-h">Latest <span class="mockflag" id="mockflag" hidden>· demo data</span></h2>
+      <div id="latest" class="card-host jc-root" aria-live="polite"></div>
+    </section>
+
+    <section id="more" aria-labelledby="more-h" hidden>
+      <h2 class="section-h actions-h" id="more-h">What you can do</h2>
+      <div class="grid2">
+        <button class="tile" id="a-chakshu" type="button">Report on Chakshu<span>Copies a filled draft, opens the form</span></button>
+        <button class="tile" id="a-1930" type="button">Call 1930<span>Number and what to say</span></button>
+        <button class="tile" id="a-share" type="button">Share with family<span>Text + ring picture</span></button>
+        <button class="tile" id="a-dispute" type="button">Dispute<span>Think this is wrong?</span></button>
+      </div>
+      <div id="a-out" class="panel raised" style="margin-top:10px" hidden></div>
+    </section>
+
+    <section aria-labelledby="check-h">
+      <h2 class="section-h" id="check-h">Check a message</h2>
+      <form id="manual" class="panel" style="display:grid;gap:12px">
+        <label class="sr" for="mtext">Message, number, UPI handle or link</label>
+        <textarea id="mtext" placeholder="Paste a message, number, UPI handle or link" maxlength="2000"></textarea>
+        <div class="row">
+          <span class="grow caption muted">Sent only when you press Check.</span>
+          <button class="btn primary" id="mbtn" type="submit">Check</button>
+        </div>
+        <p class="result-note" id="mnote" hidden></p>
+      </form>
+    </section>
+
+    <section aria-labelledby="hist-h">
+      <h2 class="section-h" id="hist-h">Recent checks</h2>
+      <ul class="hist" id="hist"></ul>
+      <p class="caption muted" id="hist-empty" hidden>Nothing yet. JAAL stays silent until something is reported.</p>
+    </section>
+  </main>
+  <p class="foot">Messages are triaged on this device. Only flagged items reach the network, under a salted device hash. <a href="options.html#privacy" target="_blank">Privacy</a></p>
+
+  <script src="../lib/extract.js"></script>
+  <script src="../src/core.js"></script>
+  <script src="../lib/ring.js"></script>
+  <script src="../src/card.js"></script>
+  <script src="../src/mock.js"></script>
+  <script src="common.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>

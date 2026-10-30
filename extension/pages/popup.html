@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>JAAL</title>
+  <link rel="stylesheet" href="../lib/tokens.css">
+  <link rel="stylesheet" href="pages.css">
+  <style>
+    body { width: 340px; }
+    main { padding: 14px 16px 16px; gap: 14px; }
+    .toggles { padding: 0 16px; }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#6E5BFF"/><g stroke="#fff" stroke-width="1.5" fill="none" stroke-opacity=".85"><circle cx="16" cy="16" r="9"/><path d="M16 7v18M8.2 11.5l15.6 9M8.2 20.5l15.6-9"/></g><g fill="#fff"><circle cx="16" cy="16" r="2.8"/><circle cx="16" cy="7" r="1.9"/><circle cx="23.8" cy="11.5" r="1.9"/><circle cx="23.8" cy="20.5" r="1.9"/><circle cx="16" cy="25" r="1.9"/><circle cx="8.2" cy="20.5" r="1.9"/><circle cx="8.2" cy="11.5" r="1.9"/></g></svg>
+    <div class="grow"><div class="brand">JAAL <small>जाल · scam shield</small></div></div>
+    <span class="pill" id="net"><i></i><span>…</span></span>
+  </header>
+  <main>
+    <p class="caption muted" id="summary" style="margin:0">Watching quietly.</p>
+    <div class="panel raised toggles" id="toggles"></div>
+    <div class="grid2">
+      <button class="btn primary" id="open" type="button">Open JAAL</button>
+      <button class="btn" id="settings" type="button">Settings</button>
+    </div>
+  </main>
+  <script src="../lib/extract.js"></script>
+  <script src="../src/core.js"></script>
+  <script src="../src/mock.js"></script>
+  <script src="common.js"></script>
+  <script src="toggles.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

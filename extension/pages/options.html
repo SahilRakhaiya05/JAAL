@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JAAL settings</title>
+  <link rel="stylesheet" href="../lib/tokens.css">
+  <link rel="stylesheet" href="pages.css">
+  <style>
+    main { max-width: 680px; padding: 28px 20px 48px; gap: 28px; }
+    h1 { font: var(--t-display); margin: 0 0 6px; }
+    h2 { font: var(--t-verdict); margin: 0 0 12px; font-size: 19px; line-height: 24px; }
+    .lede { color: var(--text-lo); margin: 0; }
+    .welcome { border-color: rgba(110,91,255,.5); }
+    .stack { display: grid; gap: 12px; }
+    .codein { font: 600 24px/28px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .3em; text-align: center; max-width: 220px; }
+    ul.plain { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+    .status { font: var(--t-caption); color: var(--text-lo); min-height: 18px; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 560px) { .two { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#6E5BFF"/><g stroke="#fff" stroke-width="1.5" fill="none" stroke-opacity=".85"><circle cx="16" cy="16" r="9"/><path d="M16 7v18M8.2 11.5l15.6 9M8.2 20.5l15.6-9"/></g><g fill="#fff"><circle cx="16" cy="16" r="2.8"/><circle cx="16" cy="7" r="1.9"/><circle cx="23.8" cy="11.5" r="1.9"/><circle cx="23.8" cy="20.5" r="1.9"/><circle cx="16" cy="25" r="1.9"/><circle cx="8.2" cy="20.5" r="1.9"/><circle cx="8.2" cy="11.5" r="1.9"/></g></svg>
+    <div class="grow"><div class="brand">JAAL <small>Settings</small></div></div>
+    <span class="pill" id="net"><i></i><span>…</span></span>
+  </header>
+  <main>
+    <section class="panel welcome" id="welcome" hidden>
+      <h1>JAAL is on</h1>
+      <p class="lede">It stays silent. You will see a card only when something you receive, paste, download or open matches a report from other people. </p>
+      <p style="margin:14px 0 0"><a class="btn primary" id="demoLink" href="../demo/index.html" target="_blank">Open the demo pages</a></p>
+    </section>
+
+    <section aria-labelledby="rules-h">
+      <h2 id="rules-h">Rules</h2>
+      <div class="panel" style="padding-top:4px;padding-bottom:4px" id="toggles"></div>
+    </section>
+
+    <section aria-labelledby="sites-h" class="stack">
+      <h2 id="sites-h" style="margin:0">Stopping confirmed sites</h2>
+      <p class="caption muted" style="margin:0">Confirmed sites are always sent to a JAAL warning page. Granting site access lets Chrome do this before the page loads at all (a declarativeNetRequest redirect), instead of right after it starts.</p>
+      <div class="row"><button class="btn" id="hostAccess" type="button">Allow early stop</button><span class="status" id="hostStatus"></span></div>
+      <ul class="hist" id="blockedList" hidden></ul>
+    </section>
+
+    <section aria-labelledby="lang-h" class="stack">
+      <h2 id="lang-h" style="margin:0">Language</h2>
+      <label class="field" for="lang">Cards and verdicts
+        <select id="lang">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+          <option value="gu">ગુજરાતી (Gujarati)</option>
+        </select>
+      </label>
+    </section>
+
+    <section aria-labelledby="guard-h" class="stack">
+      <h2 id="guard-h" style="margin:0">Guardian</h2>
+      <p class="caption muted" style="margin:0">Link this browser to a family member's JAAL. When a confirmed ring reaches one device, the other gets a heads-up. Only the verdict is shared, never messages.</p>
+      <div class="two">
+        <form class="panel raised stack" id="linkForm">
+          <b>I'm the guardian</b>
+          <span class="caption muted">Enter the 6-digit code shown on your family member's JAAL.</span>
+          <label class="sr" for="code">6-digit code</label>
+          <input id="code" class="codein" type="text" inputmode="numeric" autocomplete="off" maxlength="7" placeholder="000000" pattern="\d{3}\s?\d{3}">
+          <button class="btn primary" type="submit">Link</button>
+          <span class="status" id="linkStatus" aria-live="polite"></span>
+        </form>
+        <div class="panel raised stack">
+          <b>Protect this browser</b>
+          <span class="caption muted">Show a code for a guardian to enter on their device.</span>
+          <div class="code" id="myCode" aria-live="polite">— — —</div>
+          <button class="btn" id="pair" type="button">Get a code</button>
+          <span class="status" id="pairStatus"></span>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="api-h" class="stack">
+      <h2 id="api-h" style="margin:0">Server</h2>
+      <label class="field" for="api">JAAL API base URL
+        <input id="api" type="url" spellcheck="false" placeholder="http://localhost:8787/api">
+      </label>
+      <div class="row" style="flex-wrap:wrap">
+        <button class="btn primary" id="saveApi" type="button">Save and test</button>
+        <button class="btn" id="useLocal" type="button">Use local</button>
+        <button class="btn" id="useProd" type="button" hidden>Use production</button>
+        <span class="status" id="apiStatus" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <section aria-labelledby="privacy-h" id="privacy" class="panel stack">
+      <h2 id="privacy-h" style="margin:0">Privacy, in plain words</h2>
+      <ul class="plain caption">
+        <li>Every message is scored on this device first. Almost all of them stop there.</li>
+        <li>For weak signals, JAAL compares an 8-character hash prefix against a list it downloaded. Only a prefix match, or a strong pattern match, sends that one message's text to the JAAL graph.</li>
+        <li>Pastes: only the UPI handle, account number or wallet address is checked, never the rest of the clipboard, and only during a paste you make.</li>
+        <li>Sites: the domain is hashed on-device; the domain is only sent when its prefix is on the reported list.</li>
+        <li>Downloads: file names are matched on-device. Nothing is uploaded.</li>
+        <li>You are identified by a salted hash of a random device id, never by name, number or email.</li>
+      </ul>
+      <p class="caption muted" style="margin:0">Device hash: <span class="kbd" id="dev">…</span></p>
+    </section>
+  </main>
+  <script src="../lib/extract.js"></script>
+  <script src="../src/core.js"></script>
+  <script src="../src/mock.js"></script>
+  <script src="common.js"></script>
+  <script src="toggles.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

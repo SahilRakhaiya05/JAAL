@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JAAL stopped this site</title>
+  <link rel="stylesheet" href="../lib/tokens.css">
+  <link rel="stylesheet" href="pages.css">
+  <style>
+    body { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background:
+      radial-gradient(900px 500px at 50% -10%, rgba(229,72,77,.10), transparent 60%), var(--ink-900); }
+    .wrap { width: min(100%, 520px); display: grid; gap: 18px; }
+    .domain { font: 400 13px/18px ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--text-lo); word-break: break-all; }
+    .ring { height: 220px; border: var(--hairline); border-radius: 16px; background: rgba(10,12,15,.6); overflow: hidden; }
+    .ring svg { width: 100%; height: 100%; display: block; }
+    .act { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .tiny { font: var(--t-micro); color: var(--text-lo); text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="cardhost" class="jc-root"></div>
+    <div class="act">
+      <button class="btn primary" id="back" type="button">Go back</button>
+      <button class="btn" id="cont" type="button">Continue anyway</button>
+    </div>
+    <p class="tiny">Continue anyway allows this site until you close the browser. <a href="#" id="dispute">This is my site, dispute</a></p>
+  </div>
+  <script src="../lib/extract.js"></script>
+  <script src="../src/core.js"></script>
+  <script src="../lib/ring.js"></script>
+  <script src="../src/card.js"></script>
+  <script src="../src/mock.js"></script>
+  <script src="common.js"></script>
+  <script src="blocked.js"></script>
+</body>
+</html>

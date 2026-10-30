@@ -1,0 +1,101 @@
+/* JAAL extension pages. Tokens come from lib/tokens.css (copied from shared/ at build). */
+@font-face { font-family: "Inter"; font-weight: 400; font-style: normal; font-display: swap; src: url("../fonts/inter-400.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; font-style: normal; font-display: swap; src: url("../fonts/inter-600.woff2") format("woff2"); }
+@font-face { font-family: "Noto Sans Devanagari"; font-weight: 400; font-display: swap; src: url("../fonts/deva-400.woff2") format("woff2"); unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FF; }
+@font-face { font-family: "Noto Sans Devanagari"; font-weight: 600; font-display: swap; src: url("../fonts/deva-600.woff2") format("woff2"); unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FF; }
+@font-face { font-family: "Noto Sans Gujarati"; font-weight: 400; font-display: swap; src: url("../fonts/gujr-400.woff2") format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0A80-0AFF, U+200C-200D, U+20B9, U+25CC, U+A830-A839; }
+@font-face { font-family: "Noto Sans Gujarati"; font-weight: 600; font-display: swap; src: url("../fonts/gujr-600.woff2") format("woff2"); unicode-range: U+0951-0952, U+0964-0965, U+0A80-0AFF, U+200C-200D, U+20B9, U+25CC, U+A830-A839; }
+
+* { box-sizing: border-box; }
+html { color-scheme: dark; }
+body {
+  margin: 0; background: var(--ink-900); color: var(--text-hi);
+  font: var(--t-body); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+a { color: #B4A9FF; text-underline-offset: 3px; }
+a:hover { color: #CFC8FF; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid #B4A9FF; outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- top bar ---------- */
+.bar { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: var(--hairline); position: sticky; top: 0; background: var(--ink-900); z-index: 2; }
+.mark { width: 28px; height: 28px; flex: none; }
+.brand { font: 600 17px/20px var(--font); letter-spacing: .02em; }
+.brand small { font: var(--t-micro); color: var(--text-lo); display: block; letter-spacing: 0; margin-top: 2px; }
+.grow { flex: 1; min-width: 0; }
+.pill { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border: var(--hairline); border-radius: 12px; font: var(--t-micro); color: var(--text-lo); white-space: nowrap; }
+.pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--text-lo); display: inline-block; }
+.pill.on i { background: #3DD68C; }
+.pill.off i { background: transparent; border: 1.5px solid var(--text-lo); }
+.iconbtn { width: 48px; height: 48px; margin: -12px -12px -12px 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 24px; color: var(--text-lo); background: none; border: 0; cursor: pointer; text-decoration: none; }
+.iconbtn:hover { color: var(--text-hi); background: var(--ink-700); }
+.iconbtn svg { width: 18px; height: 18px; }
+
+/* ---------- layout ---------- */
+main { padding: 16px; display: grid; gap: 20px; max-width: 560px; margin: 0 auto; }
+.section-h { font: 600 13px/18px var(--font); color: var(--text-lo); letter-spacing: .06em; text-transform: uppercase; margin: 0 0 10px; }
+.panel { background: var(--ink-900); border: var(--hairline); border-radius: var(--radius-card); padding: var(--pad-card); }
+.raised { background: var(--ink-700); }
+.muted { color: var(--text-lo); }
+.caption { font: var(--t-caption); }
+.micro { font: var(--t-micro); }
+
+.empty { display: grid; gap: 12px; justify-items: start; }
+.empty .quiet { font: var(--t-verdict); margin: 0; }
+.empty p { margin: 0; color: var(--text-lo); }
+
+/* ---------- buttons ---------- */
+.btn { min-height: var(--tap); padding: 0 18px; border-radius: 12px; border: var(--hairline); background: transparent; color: var(--text-hi); font: 600 15px/18px var(--font); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+.btn:hover { background: var(--ink-700); }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.btn.primary:hover { filter: brightness(1.08); background: var(--brand); }
+.btn[disabled] { opacity: .5; cursor: default; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile { min-height: 64px; padding: 12px 14px; border-radius: 14px; border: var(--hairline); background: var(--ink-700); color: var(--text-hi); text-align: left; cursor: pointer; display: grid; gap: 2px; font: 600 15px/20px var(--font); }
+.tile span { font: var(--t-caption); color: var(--text-lo); font-weight: 400; }
+.tile:hover { border-color: #3A4048; }
+
+/* ---------- inputs ---------- */
+textarea, input[type=text], input[type=url], select {
+  width: 100%; background: var(--ink-700); border: var(--hairline); border-radius: 12px; padding: 12px 14px; color: var(--text-hi); font: var(--t-body); min-height: var(--tap);
+}
+textarea { resize: vertical; min-height: 104px; }
+textarea::placeholder, input::placeholder { color: #6B7178; }
+label.field { display: grid; gap: 6px; font: var(--t-caption); color: var(--text-lo); }
+.row { display: flex; gap: 10px; align-items: center; }
+.row > .grow { flex: 1; }
+
+/* ---------- history ---------- */
+.hist { list-style: none; margin: 0; padding: 0; border: var(--hairline); border-radius: 16px; overflow: hidden; }
+.hist li + li { border-top: var(--hairline); }
+.hist button { width: 100%; min-height: 56px; display: grid; grid-template-columns: 24px 1fr auto; gap: 12px; align-items: center; padding: 10px 14px; background: none; border: 0; text-align: left; cursor: pointer; color: var(--text-hi); }
+.hist button:hover { background: var(--ink-700); }
+.hist .h { font: 400 14px/20px var(--font); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hist .m { font: var(--t-micro); color: var(--text-lo); }
+.hist svg { width: 16px; height: 16px; }
+.s-confirmed { color: var(--state-confirmed); }
+.s-reported { color: var(--state-caution); }
+.s-clear { color: var(--text-lo); }
+.s-local { color: var(--text-hi); }
+.s-question { color: #B4A9FF; }
+
+/* ---------- toggles ---------- */
+.toggle { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center; padding: 14px 0; min-height: 64px; }
+.toggle + .toggle { border-top: var(--hairline); }
+.toggle b { font: 600 15px/20px var(--font); }
+.toggle small { grid-column: 1; font: var(--t-caption); color: var(--text-lo); }
+.switch { grid-row: 1 / span 2; grid-column: 2; position: relative; width: 52px; height: 32px; }
+.switch input { position: absolute; inset: -8px; width: 68px; height: 48px; opacity: 0; margin: 0; cursor: pointer; z-index: 1; }
+.switch span { position: absolute; inset: 0; border-radius: 16px; background: var(--ink-500); transition: background 160ms; }
+.switch span::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: var(--text-hi); transition: transform 160ms var(--ease-enter); }
+.switch input:checked + span { background: var(--brand); }
+.switch input:checked + span::after { transform: translateX(20px); }
+.switch input:focus-visible + span { outline: 2px solid #B4A9FF; outline-offset: 2px; }
+
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink-700); border: var(--hairline); border-radius: 12px; padding: 12px 16px; font: var(--t-caption); z-index: 9; max-width: calc(100vw - 32px); }
+.code { font: 600 28px/32px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .18em; }
+.kbd { font: 400 12px/16px ui-monospace, SFMono-Regular, Consolas, monospace; background: var(--ink-700); border: var(--hairline); border-radius: 6px; padding: 2px 6px; word-break: break-all; }
+
+@media (prefers-reduced-motion: reduce) { .switch span, .switch span::after { transition: none; } }
